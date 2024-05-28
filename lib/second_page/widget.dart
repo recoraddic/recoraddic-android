@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:recoraddic/types/quest.dart';
 
 import 'style.dart';
 
 class Section extends StatelessWidget {
   final String title;
   final String subtitle;
-  final bool flag;
-  final void Function(BuildContext, String, String?) onPressed;
+  final void Function(BuildContext)? onPressed;
 
   const Section({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.flag,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override
@@ -33,23 +31,21 @@ class Section extends StatelessWidget {
                 style: AppFonts.middleWhiteText,
               ),
             ),
-            flag
-                ? IconButton(
-                    onPressed: () => onPressed(context, '추가하기', null),
-                    icon: Transform.scale(
-                      scale: 1.5,
-                      child: const Icon(
-                        Icons.add,
-                        color: AppColors.whiteColor,
-                        size: 24,
-                      ),
-                    ),
-                    style: IconButton.styleFrom(
-                      hoverColor: Colors.transparent,
-                    ),
-                    visualDensity: VisualDensity.compact,
-                  )
-                : const SizedBox(),
+            IconButton(
+              onPressed: () => onPressed?.call(context),
+              icon: Transform.scale(
+                scale: 1.5,
+                child: const Icon(
+                  Icons.add,
+                  color: AppColors.whiteColor,
+                  size: 24,
+                ),
+              ),
+              style: IconButton.styleFrom(
+                overlayColor: Colors.transparent,
+              ),
+              visualDensity: VisualDensity.compact,
+            )
           ],
         ),
         const SizedBox(height: AppConstants.bigBoxSize),
@@ -65,18 +61,17 @@ class Section extends StatelessWidget {
   }
 }
 
-class Diary extends StatelessWidget {
+class DiarySection extends StatelessWidget {
   final String diary;
-  final SharedPreferences prefs;
-  final void Function() loadDiary;
-  final void Function(BuildContext, String, String?) showDiaryModal;
+  final Future Function() deleteDiary;
+  final void Function(BuildContext) showDiaryModal;
 
-  const Diary(
-      {super.key,
-      required this.diary,
-      required this.prefs,
-      required this.loadDiary,
-      required this.showDiaryModal});
+  const DiarySection({
+    super.key,
+    required this.diary,
+    required this.deleteDiary,
+    required this.showDiaryModal,
+  });
 
   void _showMenu(BuildContext context) {
     showModalBottomSheet(
@@ -89,20 +84,24 @@ class Diary extends StatelessWidget {
               leading: const Icon(Icons.edit),
               title: const Text('수정하기'),
               onTap: () {
-                showDiaryModal(context, '수정하기', diary);
                 Navigator.pop(context);
+
+                Future.delayed(const Duration(milliseconds: 200), () {
+                  if (context.mounted) {
+                    showDiaryModal(context);
+                  }
+                });
               },
             ),
             ListTile(
               leading: const Icon(Icons.delete),
               title: const Text('삭제하기'),
-              onTap: () {
-                String curDate =
-                    '${DateTime.now().toIso8601String().split('T')[0]}-diary';
+              onTap: () async {
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
 
-                prefs.remove(curDate);
-                loadDiary();
-                Navigator.pop(context);
+                await deleteDiary();
               },
             ),
           ],
@@ -156,17 +155,43 @@ class Diary extends StatelessWidget {
   }
 }
 
-class AccumulateQuest extends StatelessWidget {
-  final List<String> accumulateQuestList;
-  final List<String> accumulateCheckList;
-  final void Function(int) updateAccumulateCheck;
+class AccumulatedQuestSection extends StatelessWidget {
+  final List<Quest> accumulatedQuestList;
+  final Future Function(int) updateAccumulatedQuest;
+  final Future Function(int) deleteAccumulatedQuest;
+  final void Function(BuildContext) showAccumulatedQuestModal;
 
-  const AccumulateQuest({
+  const AccumulatedQuestSection({
     super.key,
-    required this.accumulateQuestList,
-    required this.accumulateCheckList,
-    required this.updateAccumulateCheck,
+    required this.accumulatedQuestList,
+    required this.updateAccumulatedQuest,
+    required this.deleteAccumulatedQuest,
+    required this.showAccumulatedQuestModal,
   });
+
+  void _showMenu(BuildContext context, int index) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('삭제하기'),
+              onTap: () async {
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
+
+                await deleteAccumulatedQuest(index);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,10 +199,10 @@ class AccumulateQuest extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: AppConstants.smallBoxSize),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: AppConstants.smallPadding),
               child: Text(
                 '누적 퀘스트',
@@ -185,55 +210,74 @@ class AccumulateQuest extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
             ),
-            SizedBox(),
+            IconButton(
+              onPressed: () => showAccumulatedQuestModal(context),
+              icon: Transform.scale(
+                scale: 1.5,
+                child: const Icon(
+                  Icons.add,
+                  color: AppColors.whiteColor,
+                  size: 24,
+                ),
+              ),
+              style: IconButton.styleFrom(
+                overlayColor: Colors.transparent,
+              ),
+              visualDensity: VisualDensity.compact,
+            ),
           ],
         ),
         const SizedBox(height: AppConstants.bigBoxSize),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: accumulateQuestList.length,
+          itemCount: accumulatedQuestList.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.smallPadding),
-              child: Container(
-                margin:
-                    const EdgeInsets.only(bottom: AppConstants.smallBoxSize),
-                padding: const EdgeInsets.symmetric(
-                    vertical: AppConstants.smallPadding,
-                    horizontal: AppConstants.bigPadding),
-                decoration: BoxDecoration(
-                  color: accumulateCheckList[index] == 'true'
-                      ? AppColors.middleGreyColor
-                      : AppColors.darkGreyColor,
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.bigBorderRadius),
-                ),
-                child: TextButton.icon(
-                  onPressed: () {
-                    updateAccumulateCheck(index);
-                  },
-                  icon: Icon(
-                    accumulateCheckList[index] == 'true'
-                        ? Icons.check_circle
-                        : Icons.circle_outlined,
-                    color: accumulateCheckList[index] == 'true'
-                        ? AppColors.lightBlueColor
-                        : AppColors.darkBlueColor,
+              child: GestureDetector(
+                onLongPress: () {
+                  _showMenu(context, index);
+                },
+                child: Container(
+                  margin:
+                      const EdgeInsets.only(bottom: AppConstants.smallBoxSize),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: AppConstants.smallPadding,
+                      horizontal: AppConstants.bigPadding),
+                  decoration: BoxDecoration(
+                    color: accumulatedQuestList[index].isDone
+                        ? AppColors.middleGreyColor
+                        : AppColors.darkGreyColor,
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.bigBorderRadius),
                   ),
-                  label: Text(
-                    accumulateQuestList[index],
-                    style: accumulateCheckList[index] == 'true'
-                        ? AppFonts.smallWhiteText
-                        : AppFonts.smallLightGreyText,
-                  ),
-                  style: TextButton.styleFrom(
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    alignment: Alignment.centerLeft,
-                    overlayColor: Colors.transparent,
+                  child: TextButton.icon(
+                    onPressed: () async {
+                      await updateAccumulatedQuest(index);
+                    },
+                    icon: Icon(
+                      accumulatedQuestList[index].isDone
+                          ? Icons.check_circle
+                          : Icons.circle_outlined,
+                      color: accumulatedQuestList[index].isDone
+                          ? AppColors.lightBlueColor
+                          : AppColors.darkBlueColor,
+                    ),
+                    label: Text(
+                      accumulatedQuestList[index].quest,
+                      style: accumulatedQuestList[index].isDone
+                          ? AppFonts.smallWhiteText
+                          : AppFonts.smallLightGreyText,
+                    ),
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      alignment: Alignment.centerLeft,
+                      overlayColor: Colors.transparent,
+                    ),
                   ),
                 ),
               ),
@@ -245,25 +289,19 @@ class AccumulateQuest extends StatelessWidget {
   }
 }
 
-class CommonQuest extends StatelessWidget {
-  final List<String> commonQuestList;
-  final List<String> commonCheckList;
-  final Future Function(String) saveCommonQuest;
-  final Future Function(List<String>, List<String>) saveCommonQuestList;
-  final void Function() loadCommonQuestList;
-  final void Function(int) updateCommonCheck;
-  final void Function(BuildContext, String, String?, {int? index})
-      showCommonQuestModal;
+class NormalQuestSection extends StatelessWidget {
+  final List<Quest> normalQuestList;
+  final Future Function(int) updateNormalQuest;
+  final Future Function(int) deleteNormalQuest;
+  final void Function(BuildContext, {int? index}) showNormalQuestModal;
 
-  const CommonQuest(
-      {super.key,
-      required this.commonQuestList,
-      required this.commonCheckList,
-      required this.saveCommonQuest,
-      required this.saveCommonQuestList,
-      required this.loadCommonQuestList,
-      required this.updateCommonCheck,
-      required this.showCommonQuestModal});
+  const NormalQuestSection({
+    super.key,
+    required this.normalQuestList,
+    required this.updateNormalQuest,
+    required this.deleteNormalQuest,
+    required this.showNormalQuestModal,
+  });
 
   void _showMenu(BuildContext context, int index) {
     showModalBottomSheet(
@@ -276,25 +314,24 @@ class CommonQuest extends StatelessWidget {
               leading: const Icon(Icons.edit),
               title: const Text('수정하기'),
               onTap: () {
-                showCommonQuestModal(context, '수정하기', commonQuestList[index],
-                    index: index);
                 Navigator.pop(context);
+
+                Future.delayed(const Duration(milliseconds: 200), () {
+                  if (context.mounted) {
+                    showNormalQuestModal(context, index: index);
+                  }
+                });
               },
             ),
             ListTile(
               leading: const Icon(Icons.delete),
               title: const Text('삭제하기'),
               onTap: () async {
-                commonQuestList.removeAt(index);
-                commonCheckList.removeAt(index);
-
-                await saveCommonQuestList(commonQuestList, commonCheckList);
-
-                loadCommonQuestList();
-
                 if (context.mounted) {
                   Navigator.pop(context);
                 }
+
+                await deleteNormalQuest(index);
               },
             ),
           ],
@@ -321,7 +358,7 @@ class CommonQuest extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () => showCommonQuestModal(context, '추가하기', null),
+              onPressed: () => showNormalQuestModal(context),
               icon: Transform.scale(
                 scale: 1.5,
                 child: const Icon(
@@ -331,7 +368,7 @@ class CommonQuest extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                hoverColor: Colors.transparent,
+                overlayColor: Colors.transparent,
               ),
               visualDensity: VisualDensity.compact,
             ),
@@ -341,7 +378,7 @@ class CommonQuest extends StatelessWidget {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: commonQuestList.length,
+          itemCount: normalQuestList.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(
@@ -357,27 +394,27 @@ class CommonQuest extends StatelessWidget {
                       vertical: AppConstants.smallPadding,
                       horizontal: AppConstants.bigPadding),
                   decoration: BoxDecoration(
-                    color: commonCheckList[index] == 'true'
+                    color: normalQuestList[index].isDone
                         ? AppColors.middleGreyColor
                         : AppColors.darkGreyColor,
                     borderRadius:
                         BorderRadius.circular(AppConstants.bigBorderRadius),
                   ),
                   child: TextButton.icon(
-                    onPressed: () {
-                      updateCommonCheck(index);
+                    onPressed: () async {
+                      await updateNormalQuest(index);
                     },
                     icon: Icon(
-                      commonCheckList[index] == 'true'
+                      normalQuestList[index].isDone
                           ? Icons.check_circle
                           : Icons.circle_outlined,
-                      color: commonCheckList[index] == 'true'
+                      color: normalQuestList[index].isDone
                           ? AppColors.lightBlueColor
                           : AppColors.darkBlueColor,
                     ),
                     label: Text(
-                      commonQuestList[index],
-                      style: commonCheckList[index] == 'true'
+                      normalQuestList[index].quest,
+                      style: normalQuestList[index].isDone
                           ? AppFonts.smallWhiteText
                           : AppFonts.smallLightGreyText,
                     ),

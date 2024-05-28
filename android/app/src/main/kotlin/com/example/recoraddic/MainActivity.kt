@@ -1,4 +1,4 @@
-package com.example.recoraddic_flutter
+package com.example.recoraddic
 
 import io.flutter.embedding.android.FlutterActivity
 

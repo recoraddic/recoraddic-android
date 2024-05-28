@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class QuestThumbnail extends StatelessWidget {
@@ -7,7 +6,12 @@ class QuestThumbnail extends StatelessWidget {
   final int momentumLevel;
   final int accumulative;
 
-  const QuestThumbnail({super.key, required this.name, required this.tier, required this.momentumLevel, required this.accumulative});
+  const QuestThumbnail(
+      {super.key,
+      required this.name,
+      required this.tier,
+      required this.momentumLevel,
+      required this.accumulative});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +19,12 @@ class QuestThumbnail extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         QuestTierFrame(tier: tier),
-        Center( // Center the fire
+        Center(
+          // Center the fire
           child: FractionallySizedBox(
-            widthFactor: frameInfo[momentumLevel].ratio,
-            heightFactor: frameInfo[momentumLevel].ratio,
-            child: Fire(momentumLevel: momentumLevel)
-            ),
+              widthFactor: frameInfo[momentumLevel].ratio,
+              heightFactor: frameInfo[momentumLevel].ratio,
+              child: Fire(momentumLevel: momentumLevel)),
         ),
         Align(
           alignment: Alignment.center,
@@ -47,7 +51,6 @@ class QuestThumbnail extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class Pair {
@@ -59,21 +62,30 @@ class Pair {
 }
 
 List<Pair> frameInfo = [
-  Pair(List.generate(9, (index) => 'nothing'), const Duration(milliseconds: 75), 0.95*0.85*0.85), 
-  Pair(List.generate(9, (index) => 'assets/fire1_frame${index+1}.png'), const Duration(milliseconds: 750), 0.95*0.85*0.85), 
-  Pair(List.generate(9, (index) => 'assets/fire2_frame${index+1}.png'), const Duration(milliseconds: 750), 0.95*0.85*0.85), 
-  Pair(List.generate(9, (index) => 'assets/fire3_frame${index+1}.png'), const Duration(milliseconds: 750), 0.95*0.85*0.85), 
-  Pair(List.generate(9, (index) => 'assets/fire4_frame${index+1}.png'), const Duration(milliseconds: 600), 0.95*0.85*0.85), 
-  Pair(List.generate(6, (index) => 'assets/fire5_frame${index+1}.png'), const Duration(milliseconds: 400), 0.95*0.85*0.85), 
-  Pair(List.generate(6, (index) => 'assets/fire6_frame${index+1}.png'), const Duration(milliseconds: 300), 0.95*0.85*0.85), 
-  Pair(List.generate(6, (index) => 'assets/fire7_frame${index+1}.png'), const Duration(milliseconds: 240), 0.95*0.85), 
-  Pair(List.generate(6, (index) => 'assets/fire8_frame${index+1}.png'), const Duration(milliseconds: 150), 0.95*0.85), 
-  Pair(List.generate(3, (index) => 'assets/fire9_frame${index+1}.png'), const Duration(milliseconds: 75), 0.95), 
-  Pair(List.generate(4, (index) => 'assets/fire10_frame${index+1}.png'), const Duration(milliseconds: 33), 1.0)
+  Pair(List.generate(9, (index) => 'nothing'), const Duration(milliseconds: 75),
+      0.95 * 0.85 * 0.85),
+  Pair(List.generate(9, (index) => 'assets/fire/fire1_frame${index + 1}.png'),
+      const Duration(milliseconds: 750), 0.95 * 0.85 * 0.85),
+  Pair(List.generate(9, (index) => 'assets/fire/fire2_frame${index + 1}.png'),
+      const Duration(milliseconds: 750), 0.95 * 0.85 * 0.85),
+  Pair(List.generate(9, (index) => 'assets/fire/fire3_frame${index + 1}.png'),
+      const Duration(milliseconds: 750), 0.95 * 0.85 * 0.85),
+  Pair(List.generate(9, (index) => 'assets/fire/fire4_frame${index + 1}.png'),
+      const Duration(milliseconds: 600), 0.95 * 0.85 * 0.85),
+  Pair(List.generate(6, (index) => 'assets/fire/fire5_frame${index + 1}.png'),
+      const Duration(milliseconds: 400), 0.95 * 0.85 * 0.85),
+  Pair(List.generate(6, (index) => 'assets/fire/fire6_frame${index + 1}.png'),
+      const Duration(milliseconds: 300), 0.95 * 0.85 * 0.85),
+  Pair(List.generate(6, (index) => 'assets/fire/fire7_frame${index + 1}.png'),
+      const Duration(milliseconds: 240), 0.95 * 0.85),
+  Pair(List.generate(6, (index) => 'assets/fire/fire8_frame${index + 1}.png'),
+      const Duration(milliseconds: 150), 0.95 * 0.85),
+  Pair(List.generate(3, (index) => 'assets/fire/fire9_frame${index + 1}.png'),
+      const Duration(milliseconds: 75), 0.95),
+  Pair(List.generate(4, (index) => 'assets/fire/fire10_frame${index + 1}.png'),
+      const Duration(milliseconds: 33), 1.0)
   // Add more pairs as needed
 ];
-
-
 
 class Fire extends StatefulWidget {
   final int momentumLevel;
@@ -92,8 +104,11 @@ class _FireState extends State<Fire> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this, duration: frameInfo[widget.momentumLevel].duration);
-    _animation = IntTween(begin: 0, end: frameInfo[widget.momentumLevel].frames.length - 1).animate(_controller);
+    _controller = AnimationController(
+        vsync: this, duration: frameInfo[widget.momentumLevel].duration);
+    _animation = IntTween(
+            begin: 0, end: frameInfo[widget.momentumLevel].frames.length - 1)
+        .animate(_controller);
 
     _controller.repeat();
   }
@@ -105,15 +120,13 @@ class _FireState extends State<Fire> with SingleTickerProviderStateMixin {
       builder: (context, child) {
         if (widget.momentumLevel < 1) {
           return Container();
-        }
-        else {
+        } else {
           return Opacity(
-            opacity: 0.7,
-            child: Image.asset(
-              frameInfo[widget.momentumLevel].frames[_animation.value],
-              fit: BoxFit.fill,
-            )
-          );
+              opacity: 0.7,
+              child: Image.asset(
+                frameInfo[widget.momentumLevel].frames[_animation.value],
+                fit: BoxFit.fill,
+              ));
         }
       },
     );
@@ -154,9 +167,7 @@ class QuestTierFrame extends StatelessWidget {
   }
 }
 
-
 Color getTierColor(int tier) {
-  
   switch (tier ~/ 5) {
     case 0:
       return const Color.fromRGBO(112, 112, 112, 1); // Black for other tiers
@@ -181,7 +192,6 @@ Color getTierColor(int tier) {
   }
 }
 
-
 Color brighten(Color color, [int amount = 50]) {
   int red = color.red + amount;
   int green = color.green + amount;
@@ -194,7 +204,6 @@ Color brighten(Color color, [int amount = 50]) {
 
   return Color.fromARGB(color.alpha, red, green, blue);
 }
-
 
 Color brighten2(Color color, [double ratio = 0.5]) {
   double multiplier = 1 + ratio > 1 ? 1.0 : (1 + ratio < 0 ? 0.0 : 1 + ratio);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 // import 'package:test_flutter/models/record.dart';
-import '../models/record.dart';
+import '../types/record.dart';
 
 class RecordLayout extends StatefulWidget {
   final List<Record> recordList;
@@ -33,7 +33,8 @@ class RecordLayoutState extends State<RecordLayout> {
       ),
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.6, // Set this value to show more of the sheet initially
+          initialChildSize:
+              0.6, // Set this value to show more of the sheet initially
           minChildSize: 0.6, // Ensure the minimum size matches the initial size
           maxChildSize: 1.0,
           expand: false,
@@ -59,13 +60,15 @@ class RecordLayoutState extends State<RecordLayout> {
                     Center(
                       child: Text(
                         record.date,
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(height: 16),
                     Text(
                       '오늘의 일기',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Container(
@@ -82,17 +85,23 @@ class RecordLayoutState extends State<RecordLayout> {
                     SizedBox(height: 16),
                     Text(
                       '누적 퀘스트',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
-                    ...record.accumulatedQuest.map((quest) => _buildQuestItem(quest, true)).toList(),
+                    ...record.accumulatedQuest
+                        .map((quest) => _buildQuestItem(quest, true))
+                        .toList(),
                     SizedBox(height: 16),
                     Text(
                       '일반 퀘스트',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
-                    ...record.normalQuest.map((quest) => _buildQuestItem(quest, false)).toList(),
+                    ...record.normalQuest
+                        .map((quest) => _buildQuestItem(quest, false))
+                        .toList(),
                     SizedBox(height: 16),
                     Center(
                       child: TextButton(
@@ -158,7 +167,8 @@ class RecordLayoutState extends State<RecordLayout> {
     );
   }
 
-  Widget _buildRecordBlock(double width, double height, Color blockColor, int facialExpressionIndex) {
+  Widget _buildRecordBlock(double width, double height, Color blockColor,
+      int facialExpressionIndex) {
     return Container(
       width: width,
       height: height,
@@ -183,10 +193,12 @@ class RecordLayoutState extends State<RecordLayout> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue[300], // Set the background color of the entire container
+      color:
+          Colors.blue[300], // Set the background color of the entire container
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.only(top: 50.0, left: 16.0, right: 16.0, bottom: 16.0),
+        padding:
+            EdgeInsets.only(top: 50.0, left: 16.0, right: 16.0, bottom: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

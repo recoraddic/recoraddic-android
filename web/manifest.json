@@ -1,6 +1,6 @@
 {
-    "name": "recoraddic_flutter",
-    "short_name": "recoraddic_flutter",
+    "name": "recoraddic",
+    "short_name": "recoraddic",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

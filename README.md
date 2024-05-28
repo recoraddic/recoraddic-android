@@ -1,4 +1,4 @@
-# recoraddic_flutter
+# recoraddic
 
 A new Flutter project.
 

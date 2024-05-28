@@ -9,12 +9,12 @@ import 'package:hive/hive.dart';
 // import 'package:test_flutter/models/record.dart';
 // import 'package:test_flutter/models/goal.dart';
 
-import '../models/third_page_content.dart';
+import '../types/third_page_content.dart';
 import '../third_page/goal_layout.dart';
 import '../third_page/record_layout.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import '../models/record.dart';
-import '../models/goal.dart';
+import '../types/record.dart';
+import '../types/goal.dart';
 
 class ThirdPageContentWidget extends StatelessWidget {
   final List<Record> recordList;
@@ -125,7 +125,8 @@ class _ThirdPageState extends State<ThirdPage> {
     }
   }
 
-  void _showColorPickerDialog(BuildContext context, Color initialColor, ValueChanged<Color> onColorChanged) {
+  void _showColorPickerDialog(BuildContext context, Color initialColor,
+      ValueChanged<Color> onColorChanged) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -151,11 +152,13 @@ class _ThirdPageState extends State<ThirdPage> {
     switch (value) {
       case '보관함 스타일 변경':
         int currentPageIndex = _pageController.page!.round();
-        Color initialColor = Color(_thirdPageInstances[currentPageIndex].blockColor);
+        Color initialColor =
+            Color(_thirdPageInstances[currentPageIndex].blockColor);
 
         _showColorPickerDialog(context, initialColor, (Color newColor) {
           setState(() {
-            ThirdPageContent currentPage = _thirdPageInstances[currentPageIndex];
+            ThirdPageContent currentPage =
+                _thirdPageInstances[currentPageIndex];
 
             _thirdPageInstances[currentPageIndex] = ThirdPageContent(
               recordList: currentPage.recordList,

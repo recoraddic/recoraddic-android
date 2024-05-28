@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 // import 'package:test_flutter/models/goal.dart';
-import '../models/goal.dart';
-
+import '../types/goal.dart';
 
 class GoalLayout extends StatefulWidget {
   final List<Goal> goalList;
@@ -25,7 +24,8 @@ class _GoalLayoutState extends State<GoalLayout> {
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                  top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
               child: Text(
                 '목표',
                 style: TextStyle(color: Colors.white, fontSize: 24),
@@ -62,8 +62,10 @@ class _GoalLayoutState extends State<GoalLayout> {
                       _showEditOrDeleteGoalDialog(context, index);
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 32.0),
-                      padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 32.0),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
                       decoration: BoxDecoration(
                         color: Colors.green[50],
                         borderRadius: BorderRadius.circular(10.0),
@@ -76,7 +78,8 @@ class _GoalLayoutState extends State<GoalLayout> {
                   );
                 }
               },
-              padding: EdgeInsets.only(top: 4.0, bottom: 4.0, left: 8.0, right: 8.0),
+              padding:
+                  EdgeInsets.only(top: 4.0, bottom: 4.0, left: 8.0, right: 8.0),
             ),
           ),
         ],
