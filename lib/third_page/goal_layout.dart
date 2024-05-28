@@ -6,14 +6,14 @@ import '../types/goal.dart';
 class GoalLayout extends StatefulWidget {
   final List<Goal> goalList;
 
-  GoalLayout({required this.goalList});
+  const GoalLayout({super.key, required this.goalList});
 
   @override
   _GoalLayoutState createState() => _GoalLayoutState();
 }
 
 class _GoalLayoutState extends State<GoalLayout> {
-  TextEditingController _newGoalController = TextEditingController();
+  final TextEditingController _newGoalController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +21,10 @@ class _GoalLayoutState extends State<GoalLayout> {
       color: Colors.green[300],
       child: Column(
         children: [
-          Align(
+          const Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                   top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
               child: Text(
                 '목표',
@@ -47,11 +47,11 @@ class _GoalLayoutState extends State<GoalLayout> {
                           onPressed: () {
                             _showAddGoalDialog(context);
                           },
-                          child: Text('추가'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green[50],
                             foregroundColor: Colors.black,
                           ),
+                          child: Text('추가'),
                         ),
                       ),
                     ),
@@ -62,24 +62,25 @@ class _GoalLayoutState extends State<GoalLayout> {
                       _showEditOrDeleteGoalDialog(context, index);
                     },
                     child: Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 32.0),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 32.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6.0, horizontal: 16.0),
                       decoration: BoxDecoration(
                         color: Colors.green[50],
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Text(
                         '${index + 1}. ${widget.goalList[index].title}',
-                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 18.0),
                       ),
                     ),
                   );
                 }
               },
-              padding:
-                  EdgeInsets.only(top: 4.0, bottom: 4.0, left: 8.0, right: 8.0),
+              padding: const EdgeInsets.only(
+                  top: 4.0, bottom: 4.0, left: 8.0, right: 8.0),
             ),
           ),
         ],
@@ -93,17 +94,17 @@ class _GoalLayoutState extends State<GoalLayout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('목표 추가'),
+          title: const Text('목표 추가'),
           content: TextField(
             controller: _newGoalController,
-            decoration: InputDecoration(hintText: '새로운 목표'),
+            decoration: const InputDecoration(hintText: '새로운 목표'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('취소'),
+              child: const Text('취소'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -116,7 +117,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('추가'),
+              child: const Text('추가'),
             ),
           ],
         );
@@ -130,17 +131,17 @@ class _GoalLayoutState extends State<GoalLayout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('목표 수정'),
+          title: const Text('목표 수정'),
           content: TextField(
             controller: _newGoalController,
-            decoration: InputDecoration(hintText: '목표 수정'),
+            decoration: const InputDecoration(hintText: '목표 수정'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('취소'),
+              child: const Text('취소'),
             ),
             TextButton(
               onPressed: () {
@@ -151,7 +152,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                 _newGoalController.clear();
                 Navigator.of(context).pop();
               },
-              child: Text('삭제', style: TextStyle(color: Colors.red)),
+              child: const Text('삭제', style: TextStyle(color: Colors.red)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -164,7 +165,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('수정'),
+              child: const Text('수정'),
             ),
           ],
         );

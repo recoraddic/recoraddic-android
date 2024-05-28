@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-void showColorPickerDialog(BuildContext context, Color initialColor, ValueChanged<Color> onColorChanged) {
+void showColorPickerDialog(BuildContext context, Color initialColor,
+    ValueChanged<Color> onColorChanged) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Center(
+        title: const Center(
           child: Text('보관함 스타일 변경'),
         ),
         content: SingleChildScrollView(
@@ -20,7 +21,8 @@ void showColorPickerDialog(BuildContext context, Color initialColor, ValueChange
   );
 }
 
-void showGoalListDialog(BuildContext context, List<String> goalList, Function(String) onAddGoal, Function(String) onDeleteGoal) {
+void showGoalListDialog(BuildContext context, List<String> goalList,
+    Function(String) onAddGoal, Function(String) onDeleteGoal) {
   TextEditingController goalController = TextEditingController();
 
   showDialog(
@@ -29,7 +31,7 @@ void showGoalListDialog(BuildContext context, List<String> goalList, Function(St
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            title: Text('목표 편집'),
+            title: const Text('목표 편집'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: goalList.map((goal) {
@@ -37,23 +39,23 @@ void showGoalListDialog(BuildContext context, List<String> goalList, Function(St
                     children: [
                       Expanded(child: Text(goal)),
                       IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 // title: Text('Confirm'),
-                                content: Text('정말 삭제하시겠습니까?'),
+                                content: const Text('정말 삭제하시겠습니까?'),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: Text('취소'),
+                                    child: const Text('취소'),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),
                                   TextButton(
-                                    child: Text('삭제'),
+                                    child: const Text('삭제'),
                                     onPressed: () {
                                       setState(() {
                                         goalList.remove(goal);
@@ -75,12 +77,12 @@ void showGoalListDialog(BuildContext context, List<String> goalList, Function(St
             actions: <Widget>[
               TextField(
                 controller: goalController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: '새로운 목표',
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   if (goalController.text.isNotEmpty) {
                     onAddGoal(goalController.text);
