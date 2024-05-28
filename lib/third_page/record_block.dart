@@ -7,16 +7,16 @@ class RecordBlock extends StatelessWidget {
   final Color blockColor;
   final BorderRadius? borderRadius;
   final Widget facialExpression;
-  
+
   const RecordBlock({
-    Key? key,
+    super.key,
     this.width = 75,
     this.height = 50,
     this.blockColor = Colors.brown,
     this.borderRadius,
     // 일단은 표정만 파라미터로 받자
     required this.facialExpression,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class RecordBlock extends StatelessWidget {
             color: Colors.black.withOpacity(0.3), // Shadow color
             spreadRadius: 1, // Spread radius
             blurRadius: 5, // Blur radius
-            offset: Offset(0, 2), // Offset in x and y directions
+            offset: const Offset(0, 2), // Offset in x and y directions
           ),
         ],
       ),

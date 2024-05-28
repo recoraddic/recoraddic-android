@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -54,8 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _selectedIndex,
         children: <Widget>[
-          FirstPage(),
-          SecondPage(),
+          const FirstPage(),
+          const SecondPage(),
           ThirdPage(),
           FourthPage(),
         ],
@@ -64,9 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        selectedItemColor: Color.fromRGBO(0, 122, 255, 0.7),
+        unselectedItemColor: Color.fromRGBO(255, 255, 255, 0.5),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.fire_extinguisher),
+            icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(

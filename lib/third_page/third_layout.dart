@@ -21,7 +21,8 @@ class ThirdPageContentWidget extends StatelessWidget {
   final List<Goal> goalList;
   final Color blockColor;
 
-  ThirdPageContentWidget({
+  const ThirdPageContentWidget({
+    super.key,
     required this.recordList,
     required this.goalList,
     this.blockColor = Colors.brown,
@@ -36,14 +37,14 @@ class ThirdPageContentWidget extends StatelessWidget {
 
         return Column(
           children: [
-            Container(
+            SizedBox(
               height: recordHeight,
               child: RecordLayout(
                 recordList: recordList,
                 blockColor: blockColor,
               ),
             ),
-            Container(
+            SizedBox(
               height: goalHeight,
               child: GoalLayout(goalList: goalList),
             ),
@@ -55,12 +56,14 @@ class ThirdPageContentWidget extends StatelessWidget {
 }
 
 class ThirdPage extends StatefulWidget {
+  const ThirdPage({super.key});
+
   @override
   _ThirdPageState createState() => _ThirdPageState();
 }
 
 class _ThirdPageState extends State<ThirdPage> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   late Box<ThirdPageContent> thirdPageBox;
 
   List<ThirdPageContent> _thirdPageInstances = [];
@@ -110,7 +113,7 @@ class _ThirdPageState extends State<ThirdPage> {
   void _previousPage() {
     if (_pageController.page! > 0) {
       _pageController.previousPage(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
     }
@@ -119,7 +122,7 @@ class _ThirdPageState extends State<ThirdPage> {
   void _nextPage() {
     if (_pageController.page! < _thirdPageInstances.length - 1) {
       _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
     }
@@ -131,7 +134,7 @@ class _ThirdPageState extends State<ThirdPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Center(
+          title: const Center(
             child: Text('보관함 스타일 변경'),
           ),
           content: SingleChildScrollView(

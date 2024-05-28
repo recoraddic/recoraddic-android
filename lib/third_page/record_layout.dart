@@ -7,7 +7,8 @@ class RecordLayout extends StatefulWidget {
   final List<Record> recordList;
   final Color blockColor;
 
-  RecordLayout({
+  const RecordLayout({
+    super.key,
     required this.recordList,
     required this.blockColor,
   });
@@ -28,7 +29,7 @@ class RecordLayoutState extends State<RecordLayout> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
@@ -42,7 +43,7 @@ class RecordLayoutState extends State<RecordLayout> {
             return SingleChildScrollView(
               controller: scrollController,
               child: Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -50,7 +51,7 @@ class RecordLayoutState extends State<RecordLayout> {
                       child: Container(
                         width: 50,
                         height: 5,
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(10),
@@ -60,49 +61,47 @@ class RecordLayoutState extends State<RecordLayout> {
                     Center(
                       child: Text(
                         record.date,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       '오늘의 일기',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         record.diary,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       '누적 퀘스트',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     ...record.accumulatedQuest
-                        .map((quest) => _buildQuestItem(quest, true))
-                        .toList(),
-                    SizedBox(height: 16),
-                    Text(
+                        .map((quest) => _buildQuestItem(quest, true)),
+                    const SizedBox(height: 16),
+                    const Text(
                       '일반 퀘스트',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     ...record.normalQuest
-                        .map((quest) => _buildQuestItem(quest, false))
-                        .toList(),
-                    SizedBox(height: 16),
+                        .map((quest) => _buildQuestItem(quest, false)),
+                    const SizedBox(height: 16),
                     Center(
                       child: TextButton(
                         onPressed: () {
@@ -112,7 +111,7 @@ class RecordLayoutState extends State<RecordLayout> {
                             Navigator.of(context).pop();
                           });
                         },
-                        child: Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
@@ -145,8 +144,8 @@ class RecordLayoutState extends State<RecordLayout> {
 
   Widget _buildQuestItem(String text, bool completed) {
     return Container(
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: Colors.black54,
         borderRadius: BorderRadius.circular(10),
@@ -157,10 +156,10 @@ class RecordLayoutState extends State<RecordLayout> {
             completed ? Icons.check_circle : Icons.circle_outlined,
             color: Colors.white,
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             text,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ],
       ),
@@ -180,7 +179,7 @@ class RecordLayoutState extends State<RecordLayout> {
             color: Colors.black.withOpacity(0.3), // Shadow color
             spreadRadius: 1, // Spread radius
             blurRadius: 5, // Blur radius
-            offset: Offset(0, 2), // Offset in x and y directions
+            offset: const Offset(0, 2), // Offset in x and y directions
           ),
         ],
       ),
@@ -197,12 +196,12 @@ class RecordLayoutState extends State<RecordLayout> {
           Colors.blue[300], // Set the background color of the entire container
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding:
-            EdgeInsets.only(top: 50.0, left: 16.0, right: 16.0, bottom: 16.0),
+        padding: const EdgeInsets.only(
+            top: 50.0, left: 16.0, right: 16.0, bottom: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
