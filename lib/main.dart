@@ -3,10 +3,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recoraddic/types/daily_record.dart';
 import 'package:recoraddic/types/accumulated_quest.dart';
 import 'package:recoraddic/types/quest.dart';
+import 'package:recoraddic/types/section_record.dart';
 
 import 'first_page/first_page.dart';
 import 'second_page/second_page.dart';
-import 'third_page/third_layout.dart';
+import 'third_page/third_page.dart';
 import 'fourth_page/fourth_page.dart';
 
 void main() async {
@@ -14,9 +15,10 @@ void main() async {
 
   await Hive.initFlutter();
 
+  Hive.registerAdapter(QuestAdapter());
   Hive.registerAdapter(DailyRecordAdapter());
   Hive.registerAdapter(AccumulatedQuestAdapter());
-  Hive.registerAdapter(QuestAdapter());
+  Hive.registerAdapter(SectionRecordAdapter());
 
   runApp(const MyApp());
 }

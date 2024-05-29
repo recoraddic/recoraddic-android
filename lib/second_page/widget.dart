@@ -42,7 +42,7 @@ class Section extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                overlayColor: Colors.transparent,
+                // overlayColor: Colors.transparent,
               ),
               visualDensity: VisualDensity.compact,
             )
@@ -221,7 +221,7 @@ class AccumulatedQuestSection extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                overlayColor: Colors.transparent,
+                // overlayColor: Colors.transparent,
               ),
               visualDensity: VisualDensity.compact,
             ),
@@ -368,7 +368,7 @@ class NormalQuestSection extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                overlayColor: Colors.transparent,
+                // overlayColor: Colors.transparent,
               ),
               visualDensity: VisualDensity.compact,
             ),

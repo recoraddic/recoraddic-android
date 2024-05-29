@@ -1,37 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'third_page_content.dart';
+part of 'section_record.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ThirdPageContentAdapter extends TypeAdapter<ThirdPageContent> {
+class SectionRecordAdapter extends TypeAdapter<SectionRecord> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  ThirdPageContent read(BinaryReader reader) {
+  SectionRecord read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ThirdPageContent(
-      recordList: (fields[0] as List).cast<Record>(),
-      goalList: (fields[1] as List).cast<Goal>(),
-      blockColor: fields[2] as int,
+    return SectionRecord(
+      startDate: fields[0] as DateTime,
+      endDate: fields[1] as DateTime,
+      goalList: (fields[2] as List).cast<String>(),
+      blockColor: fields[3] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, ThirdPageContent obj) {
+  void write(BinaryWriter writer, SectionRecord obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.recordList)
+      ..write(obj.startDate)
       ..writeByte(1)
-      ..write(obj.goalList)
+      ..write(obj.endDate)
       ..writeByte(2)
+      ..write(obj.goalList)
+      ..writeByte(3)
       ..write(obj.blockColor);
   }
 
@@ -41,7 +44,7 @@ class ThirdPageContentAdapter extends TypeAdapter<ThirdPageContent> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ThirdPageContentAdapter &&
+      other is SectionRecordAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
