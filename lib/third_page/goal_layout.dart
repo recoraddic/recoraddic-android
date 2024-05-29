@@ -1,19 +1,23 @@
+// goal_layout.dart
+
+// libraries
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-// import 'package:test_flutter/models/goal.dart';
-import '../types/goal.dart';
+
+// types
+import '../types/section_record.dart';
 
 class GoalLayout extends StatefulWidget {
-  final List<Goal> goalList;
+  final SectionRecord sectionRecord;
 
-  const GoalLayout({super.key, required this.goalList});
+  GoalLayout({required this.sectionRecord});
 
   @override
   _GoalLayoutState createState() => _GoalLayoutState();
 }
 
 class _GoalLayoutState extends State<GoalLayout> {
-  final TextEditingController _newGoalController = TextEditingController();
+  TextEditingController _newGoalController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +25,10 @@ class _GoalLayoutState extends State<GoalLayout> {
       color: Colors.green[300],
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
+              padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
               child: Text(
                 '목표',
                 style: TextStyle(color: Colors.white, fontSize: 24),
@@ -34,9 +37,9 @@ class _GoalLayoutState extends State<GoalLayout> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: widget.goalList.length + 1,
+              itemCount: widget.sectionRecord.goalList.length + 1,
               itemBuilder: (context, index) {
-                if (index == widget.goalList.length) {
+                if (index == widget.sectionRecord.goalList.length) {
                   return Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: Align(
@@ -47,11 +50,11 @@ class _GoalLayoutState extends State<GoalLayout> {
                           onPressed: () {
                             _showAddGoalDialog(context);
                           },
+                          child: Text('추가'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green[50],
                             foregroundColor: Colors.black,
                           ),
-                          child: Text('추가'),
                         ),
                       ),
                     ),
@@ -62,25 +65,21 @@ class _GoalLayoutState extends State<GoalLayout> {
                       _showEditOrDeleteGoalDialog(context, index);
                     },
                     child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 4.0, horizontal: 32.0),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6.0, horizontal: 16.0),
+                      margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 32.0),
+                      padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
                       decoration: BoxDecoration(
                         color: Colors.green[50],
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Text(
-                        '${index + 1}. ${widget.goalList[index].title}',
-                        style: const TextStyle(
-                            color: Colors.black, fontSize: 18.0),
+                        '${index + 1}. ${widget.sectionRecord.goalList[index]}',
+                        style: TextStyle(color: Colors.black, fontSize: 18.0),
                       ),
                     ),
                   );
                 }
               },
-              padding: const EdgeInsets.only(
-                  top: 4.0, bottom: 4.0, left: 8.0, right: 8.0),
+              padding: EdgeInsets.only(top: 4.0, bottom: 4.0, left: 8.0, right: 8.0),
             ),
           ),
         ],
@@ -94,30 +93,30 @@ class _GoalLayoutState extends State<GoalLayout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('목표 추가'),
+          title: Text('목표 추가'),
           content: TextField(
             controller: _newGoalController,
-            decoration: const InputDecoration(hintText: '새로운 목표'),
+            decoration: InputDecoration(hintText: '새로운 목표'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('취소'),
+              child: Text('취소'),
             ),
             ElevatedButton(
               onPressed: () {
                 if (_newGoalController.text.isNotEmpty) {
                   setState(() {
-                    widget.goalList.add(Goal(title: _newGoalController.text));
+                    widget.sectionRecord.goalList.add(_newGoalController.text);
                     _saveGoals();
                   });
                   _newGoalController.clear();
                   Navigator.of(context).pop();
                 }
               },
-              child: const Text('추가'),
+              child: Text('추가'),
             ),
           ],
         );
@@ -126,46 +125,46 @@ class _GoalLayoutState extends State<GoalLayout> {
   }
 
   void _showEditOrDeleteGoalDialog(BuildContext context, int index) {
-    _newGoalController.text = widget.goalList[index].title;
+    _newGoalController.text = widget.sectionRecord.goalList[index];
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('목표 수정'),
+          title: Text('목표 수정'),
           content: TextField(
             controller: _newGoalController,
-            decoration: const InputDecoration(hintText: '목표 수정'),
+            decoration: InputDecoration(hintText: '목표 수정'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('취소'),
+              child: Text('취소'),
             ),
             TextButton(
               onPressed: () {
                 setState(() {
-                  widget.goalList.removeAt(index);
+                  widget.sectionRecord.goalList.removeAt(index);
                   _saveGoals();
                 });
                 _newGoalController.clear();
                 Navigator.of(context).pop();
               },
-              child: const Text('삭제', style: TextStyle(color: Colors.red)),
+              child: Text('삭제', style: TextStyle(color: Colors.red)),
             ),
             ElevatedButton(
               onPressed: () {
                 if (_newGoalController.text.isNotEmpty) {
                   setState(() {
-                    widget.goalList[index].title = _newGoalController.text;
+                    widget.sectionRecord.goalList[index] = _newGoalController.text;
                     _saveGoals();
                   });
                   _newGoalController.clear();
                   Navigator.of(context).pop();
                 }
               },
-              child: const Text('수정'),
+              child: Text('수정'),
             ),
           ],
         );
@@ -174,10 +173,9 @@ class _GoalLayoutState extends State<GoalLayout> {
   }
 
   Future<void> _saveGoals() async {
-    var goalBox = await Hive.openBox<Goal>('goalBox');
-    await goalBox.clear();
-    for (var goal in widget.goalList) {
-      await goalBox.add(goal);
-    }
+    var sectionRecordBox = await Hive.openBox<SectionRecord>('sectionRecordBox');
+    var section = sectionRecordBox.values.firstWhere((element) => element.key == widget.sectionRecord.key);
+    section.goalList = widget.sectionRecord.goalList;
+    await section.save();
   }
 }
