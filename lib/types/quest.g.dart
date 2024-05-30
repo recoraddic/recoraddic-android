@@ -17,7 +17,7 @@ class QuestAdapter extends TypeAdapter<Quest> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Quest(
-      quest: fields[0] as String,
+      name: fields[0] as String,
       isDone: fields[1] as bool,
     );
   }
@@ -27,7 +27,7 @@ class QuestAdapter extends TypeAdapter<Quest> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.quest)
+      ..write(obj.name)
       ..writeByte(1)
       ..write(obj.isDone);
   }

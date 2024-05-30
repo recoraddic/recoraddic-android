@@ -18,18 +18,24 @@ class AccumulatedQuestAdapter extends TypeAdapter<AccumulatedQuest> {
     };
     return AccumulatedQuest(
       quest: fields[0] as Quest,
-      count: fields[1] as int,
-    );
+    )
+      ..dates = (fields[1] as List).cast<DateTime>()
+      ..tier = fields[2] as int
+      ..momentumLevel = fields[3] as int;
   }
 
   @override
   void write(BinaryWriter writer, AccumulatedQuest obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.quest)
       ..writeByte(1)
-      ..write(obj.count);
+      ..write(obj.dates)
+      ..writeByte(2)
+      ..write(obj.tier)
+      ..writeByte(3)
+      ..write(obj.momentumLevel);
   }
 
   @override

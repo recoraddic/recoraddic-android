@@ -148,7 +148,7 @@ class RecordLayoutState extends State<RecordLayout> {
           ),
           SizedBox(width: 8),
           Text(
-            quest.quest,
+            quest.name,
             style: TextStyle(color: Colors.white),
           ),
         ],

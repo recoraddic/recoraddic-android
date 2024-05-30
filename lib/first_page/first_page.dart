@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'function/calendarfunc.dart';
 import 'questThumbnail.dart';
+import 'package:recoraddic/types/accumulated_quest.dart';
+
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -10,6 +13,30 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+
+  late Box<AccumulatedQuest> _accumulatedQuestListBox;
+  List<AccumulatedQuest> _accumulatedQuestList = [];
+  late Future<void> _initBoxFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initBoxFuture = _initBox();
+  }
+
+  Future _initBox() async {
+
+    _accumulatedQuestListBox =
+        await Hive.openBox<AccumulatedQuest>('accumulatedQuestListBox');
+
+    setState(() {
+      _accumulatedQuestList = _accumulatedQuestListBox.values.toList();
+    });
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +47,7 @@ class _FirstPageState extends State<FirstPage> {
       body: Center(
         child: GridView.builder(
           padding: const EdgeInsets.all(20),
-          itemCount: 30,
+          itemCount: _accumulatedQuestList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, // Number of columns
             crossAxisSpacing: 10, // Space between columns
@@ -42,10 +69,10 @@ class _FirstPageState extends State<FirstPage> {
                 );
               },
               child: QuestThumbnail(
-                name: "Quest $index",
-                tier: index,
-                accumulative: index,
-                momentumLevel: index > 10 ? 10 : index,
+                name: _accumulatedQuestList[index].quest.name,
+                tier: _accumulatedQuestList[index].tier,
+                accumulative: _accumulatedQuestList[index].dates.length,
+                momentumLevel: _accumulatedQuestList[index].momentumLevel,
               ),
             );
           },

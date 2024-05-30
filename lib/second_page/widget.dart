@@ -266,7 +266,7 @@ class AccumulatedQuestSection extends StatelessWidget {
                           : AppColors.darkBlueColor,
                     ),
                     label: Text(
-                      accumulatedQuestList[index].quest,
+                      accumulatedQuestList[index].name,
                       style: accumulatedQuestList[index].isDone
                           ? AppFonts.smallWhiteText
                           : AppFonts.smallLightGreyText,
@@ -413,7 +413,7 @@ class NormalQuestSection extends StatelessWidget {
                           : AppColors.darkBlueColor,
                     ),
                     label: Text(
-                      normalQuestList[index].quest,
+                      normalQuestList[index].name,
                       style: normalQuestList[index].isDone
                           ? AppFonts.smallWhiteText
                           : AppFonts.smallLightGreyText,

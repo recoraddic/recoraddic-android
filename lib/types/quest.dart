@@ -5,13 +5,13 @@ part 'quest.g.dart';
 @HiveType(typeId: 0)
 class Quest extends HiveObject {
   @HiveField(0)
-  String quest = '';
+  String name = '';
 
   @HiveField(1)
   bool isDone = false;
 
   Quest({
-    required this.quest,
+    required this.name,
     required this.isDone,
   });
 }
