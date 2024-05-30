@@ -7,13 +7,18 @@ part 'accumulated_quest.g.dart';
 @HiveType(typeId: 2)
 class AccumulatedQuest extends HiveObject {
   @HiveField(0)
-  Quest quest = Quest(quest: '', isDone: false);
+  Quest quest = Quest(name: '', isDone: false);
 
   @HiveField(1)
-  int count = 0;
+  List<DateTime> dates = [];
+
+  @HiveField(2)
+  int tier = 0;
+
+  @HiveField(3)
+  int momentumLevel = 0;
 
   AccumulatedQuest({
-    required this.quest,
-    required this.count,
+    required this.quest
   });
 }

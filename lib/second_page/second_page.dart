@@ -65,12 +65,12 @@ class _SecondPageState extends State<SecondPage> {
 
   Future _updateAccumulatedQuest(int index) async {
     for (var accumulatedQuest in _accumulatedQuestList) {
-      if (accumulatedQuest.quest.quest ==
-          _dailyRecord.accumulatedQuestList[index].quest) {
+      if (accumulatedQuest.quest.name ==
+          _dailyRecord.accumulatedQuestList[index].name) {
         if (_dailyRecord.accumulatedQuestList[index].isDone) {
-          accumulatedQuest.count--;
+          accumulatedQuest.dates.add(DateTime.now());
         } else {
-          accumulatedQuest.count++;
+          // accumulatedQuest.dates++;
         }
 
         await accumulatedQuest.save();
@@ -204,7 +204,7 @@ class _SecondPageState extends State<SecondPage> {
                 {
                   return ListTile(
                     leading: const SizedBox(),
-                    title: Text(curAccumulatedQuestList[index].quest),
+                    title: Text(curAccumulatedQuestList[index].name),
                     onTap: () async {
                       setState(() {
                         _dailyRecord.accumulatedQuestList.add(
@@ -232,7 +232,7 @@ class _SecondPageState extends State<SecondPage> {
     final TextEditingController diaryController = TextEditingController();
 
     if (index != null) {
-      diaryController.text = _dailyRecord.normalQuestList[index].quest;
+      diaryController.text = _dailyRecord.normalQuestList[index].name;
     }
 
     showDialog(
@@ -273,10 +273,10 @@ class _SecondPageState extends State<SecondPage> {
                           setState(() {
                             if (index == null) {
                               _dailyRecord.normalQuestList.add(
-                                Quest(quest: normalQuest, isDone: false),
+                                Quest(name: normalQuest, isDone: false),
                               );
                             } else {
-                              _dailyRecord.normalQuestList[index].quest =
+                              _dailyRecord.normalQuestList[index].name =
                                   normalQuest;
                             }
                           });
