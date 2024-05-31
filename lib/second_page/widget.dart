@@ -330,7 +330,6 @@ class NormalQuestSection extends StatelessWidget {
                 if (context.mounted) {
                   Navigator.pop(context);
                 }
-
                 await deleteNormalQuest(index);
               },
             ),

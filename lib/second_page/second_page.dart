@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:recoraddic/first_page/function/calendarfunc.dart';
 import 'package:recoraddic/types/daily_record.dart';
 import 'package:recoraddic/types/accumulated_quest.dart';
 import 'package:recoraddic/types/quest.dart';
@@ -35,6 +36,10 @@ class _SecondPageState extends State<SecondPage> {
     _accumulatedQuestListBox =
         await Hive.openBox<AccumulatedQuest>('accumulatedQuestListBox');
 
+    _accumulatedQuestListBox.watch().listen((event) {
+      _accumulatedQuestList = _accumulatedQuestListBox.values.toList();
+    });
+
     setState(() {
       _dailyRecord = _dailyRecordBox.get(date) ??
           DailyRecord(
@@ -67,12 +72,15 @@ class _SecondPageState extends State<SecondPage> {
     for (var accumulatedQuest in _accumulatedQuestList) {
       if (accumulatedQuest.quest.name ==
           _dailyRecord.accumulatedQuestList[index].name) {
-        if (_dailyRecord.accumulatedQuestList[index].isDone) {
-          accumulatedQuest.dates.add(DateTime.now());
-        } else {
-          // accumulatedQuest.dates++;
-        }
 
+        DateTime date = normalize(DateTime.now());
+        if (_dailyRecord.accumulatedQuestList[index].isDone) {
+          accumulatedQuest.dates.remove(date);
+        } else {
+          if (!accumulatedQuest.dates.contains(date)) {
+            accumulatedQuest.dates.add(date);
+          }
+        }
         await accumulatedQuest.save();
       }
     }

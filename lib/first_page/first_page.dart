@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'function/calendarfunc.dart';
 import 'questThumbnail.dart';
+import 'package:recoraddic/types/quest.dart';
 import 'package:recoraddic/types/accumulated_quest.dart';
+import 'package:recoraddic/second_page/style.dart';
+import 'package:recoraddic/second_page/widget.dart';
 
+
+// 할일: delete accumulatedQuest, 추가 시 이름 같은 것 막기
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -15,77 +20,247 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage> {
 
   late Box<AccumulatedQuest> _accumulatedQuestListBox;
-  List<AccumulatedQuest> _accumulatedQuestList = [];
+  late List<AccumulatedQuest> _accumulatedQuestList;
   late Future<void> _initBoxFuture;
 
   @override
   void initState() {
     super.initState();
 
-    _initBoxFuture = _initBox();
+    _initBoxFuture = _updateBox();
   }
 
-  Future _initBox() async {
-
+  Future _updateBox() async {
+    
     _accumulatedQuestListBox =
         await Hive.openBox<AccumulatedQuest>('accumulatedQuestListBox');
 
+    _accumulatedQuestListBox.watch().listen((event) {
+      for (var accumulatedQuest in _accumulatedQuestListBox.values) {
+        accumulatedQuest.update();
+      }
+    });
+    // await _accumulatedQuestListBox.clear();
+
+    for (var accumulatedQuest in _accumulatedQuestListBox.values) {
+      accumulatedQuest.update();
+    }
     setState(() {
       _accumulatedQuestList = _accumulatedQuestListBox.values.toList();
     });
 
   }
 
+  void _insertAccumulatedQuest(String key) {
+    _accumulatedQuestListBox.put(key,AccumulatedQuest(
+      quest: Quest(name: key, isDone: false),
+    )).then((_) {
+      _updateBox();
+   });
+  }
+
+  _deleteAccumulatedQuest(String key) {
+    _accumulatedQuestListBox.delete(key).then((_) {
+      _updateBox();
+   });
+  }
+
+
+  void _showMenu(BuildContext context, String key) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('삭제하기'),
+              onTap: () async {
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
+                await {
+                  setState(() {
+                    _deleteAccumulatedQuest(key);
+                  }),
+                };
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _inputForNewAccumulatedQuest(BuildContext context) {
+    final TextEditingController nameController = TextEditingController();
+
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('새로운 누적 퀘스트', style: AppFonts.middleWhiteText),
+                  const SizedBox(height: AppConstants.smallBoxSize),
+                  TextField(
+                    maxLines: null,
+                    controller: nameController,
+                    cursorColor: AppColors.lightBlueColor,
+                    decoration: const InputDecoration(
+                      hintText: '퀘스트 이름을 입력하세요',
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.all(AppConstants.smallPadding),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColors.lightGreyColor, width: 0.5),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColors.lightBlueColor, width: 1.5),
+                      ),
+                    ),
+                  ),
+                  Builder(builder: (context) {
+                    if (_accumulatedQuestList.map((e) => e.quest.name).contains(nameController.text)) {
+                      return const Text('이미 존재하는 퀘스트입니다.', style: AppFonts.smallWhiteText);
+                    }
+                    else {
+                      return const SizedBox();
+                    }
+                  }),
+
+                  Center(
+                    child: CustomElevatedButton(
+                      onPressed: () async {
+                        String newAccumulatedQuestName = nameController.text;
+
+                        if (newAccumulatedQuestName.isNotEmpty) {
+
+
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                          }
+
+                          nameController.clear();
+
+                          await {
+                            setState(() {
+                              _insertAccumulatedQuest(newAccumulatedQuestName);
+                            }
+                            ),
+                          };
+                        }
+                      },
+                      buttonText: '추가하기'
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Center(child: Text("누적 퀘스트 보관함")),
-      ),
-      body: Center(
-        child: GridView.builder(
-          padding: const EdgeInsets.all(20),
-          itemCount: _accumulatedQuestList.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // Number of columns
-            crossAxisSpacing: 10, // Space between columns
-            mainAxisSpacing: 10, // Space between rows
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
+    return FutureBuilder(
+      future: _initBoxFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } 
+        else {  
+          return Scaffold(
+            appBar: AppBar(
+              // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              title: const Center(child: Text("누적 퀘스트 보관함")),
+            ),
+            body: Stack(
+              children: [
+                LayoutBuilder(
+                  builder: (context, constrants) {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      child: QuestStatistics(index: index),
+                      height: constrants.maxHeight,
+                      child: GridView.builder(
+                        padding: const EdgeInsets.all(20),
+                        itemCount: _accumulatedQuestList.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, // Number of columns
+                          crossAxisSpacing: 10, // Space between columns
+                          mainAxisSpacing: 10, // Space between rows
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height * 0.9,
+                                    child: QuestStatistics(accumulatedQuest: _accumulatedQuestList[index],),
+                                  );
+                                },
+                              );
+                            },
+                            onLongPress: () {
+                              _showMenu(
+                                context,
+                                _accumulatedQuestList[index].quest.name
+                              );
+                            },
+                            child: QuestThumbnail(
+                              name: _accumulatedQuestList[index].quest.name,
+                              tier: _accumulatedQuestList[index].tier,
+                              accumulative: _accumulatedQuestList[index].dates.length,
+                              momentumLevel: _accumulatedQuestList[index].momentumLevel,
+                            ),
+                          );
+                        },
+                      ),
                     );
-                  },
-                );
-              },
-              child: QuestThumbnail(
-                name: _accumulatedQuestList[index].quest.name,
-                tier: _accumulatedQuestList[index].tier,
-                accumulative: _accumulatedQuestList[index].dates.length,
-                momentumLevel: _accumulatedQuestList[index].momentumLevel,
-              ),
-            );
-          },
-        ),
-      ),
+                  }
+                ),
+                Positioned(
+                  bottom: 0,
+                  left:0,
+                  right: 0,
+                  child: IconButton(
+                    icon: Icon(Icons.add), // Change this to your plus image
+                    onPressed: () {
+                      // Handle your button tap here...
+                      //
+                      _inputForNewAccumulatedQuest(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      }
     );
   }
 }
 
 class QuestStatistics extends StatelessWidget {
-  final int index;
+  final AccumulatedQuest accumulatedQuest;
 
-  const QuestStatistics({super.key, required this.index});
+  const QuestStatistics({super.key, required this.accumulatedQuest});
 
   @override
   Widget build(BuildContext context) {
@@ -93,50 +268,22 @@ class QuestStatistics extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     final DateTime now = normalize(DateTime.now());
-    final Map<DateTime, int> data = Map.fromEntries([
-      MapEntry(now, 1),
-      MapEntry(now.subtract(const Duration(days: 1)), 0),
-      // MapEntry(DateTime.now().subtract(const Duration(days: -2)), 0),
-      MapEntry(now.subtract(const Duration(days: 3)), 0),
-      // MapEntry(DateTime.now().subtract(const Duration(days: -4)), 0),
-      MapEntry(now.subtract(const Duration(days: 5)), 12),
-      MapEntry(now.subtract(const Duration(days: 6)), 5),
-      // MapEntry(DateTime.now().subtract(const Duration(days: -7)), 0),
-      MapEntry(now.subtract(const Duration(days: 8)), 10),
-      MapEntry(now.subtract(const Duration(days: 9)), 2),
-      MapEntry(now.subtract(const Duration(days: 10)), 1),
-      MapEntry(now.subtract(const Duration(days: 30)), 1),
-      // MapEntry(DateTime.now().subtract(const Duration(days: -11)), 0),
-    ]
-        // List.generate(
-        //   Random().nextInt(10),
-        //   (index) => MapEntry(
-        //     DateTime.now().subtract(Duration(days: Random().nextInt(365))),
-        //     Random().nextInt(2),
-        //   )
-        // )
-        );
-
-    if (data.isEmpty) {
-      return const SizedBox();
-    } else {
+    final Map<DateTime, int> data = Map.fromEntries(
+      List.generate(accumulatedQuest.dates.length, (int index) => MapEntry(accumulatedQuest.dates[index], 1 )));
       List<DateTime> sortedKeys = List<DateTime>.from(data.keys);
       sortedKeys.sort();
-      DateTime startDate = sortedKeys.first;
-      DateTime endDate = sortedKeys.last;
-      int termLength = endDate.difference(startDate).inDays + 1;
+
 
       double elementWidth = width * 0.8;
       double calendarContentWidth = width * 0.7;
       double calendarElementSize = calendarContentWidth / 7;
-      double scrollHeight =
-          (termLength / 7.0 + 2) * (calendarContentWidth / 7.0);
+
 
       return Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: height * 0.03),
           child: Text(
-            "QuestName $index",
+            "${accumulatedQuest.quest.name}",
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
@@ -183,22 +330,37 @@ class QuestStatistics extends StatelessWidget {
                       child: const Text("토", textAlign: TextAlign.center)),
                 ],
               ),
-              SizedBox(
-                width: calendarContentWidth,
-                height: height * 0.3,
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    width: calendarContentWidth,
-                    height: scrollHeight,
-                    child: SerialVisualization(data: data),
-                  ),
-                ),
-              ),
+              Builder(
+                builder: (BuildContext context) {
+                  if (data.isEmpty) {
+                    return SizedBox(
+                      width: calendarContentWidth,
+                      height: height * 0.3,
+                    );
+                  } else {
+                    DateTime startDate = sortedKeys.first;
+                    DateTime endDate = sortedKeys.last;
+                    int termLength = endDate.difference(startDate).inDays + 1;
+                    double scrollHeight = (termLength / 7.0 + 2) * (calendarContentWidth / 7.0);
+                    return SizedBox(
+                      width: calendarContentWidth,
+                      height: height * 0.3,
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: calendarContentWidth,
+                          height: scrollHeight,
+                          child: SerialVisualization(data: data),
+                        ),
+                      ),
+                    );
+                  }
+                }
+              )
             ],
           ),
         ),
       ]);
-    }
+    
   }
 }
 
@@ -354,3 +516,4 @@ class RowContent extends StatelessWidget {
     );
   }
 }
+
