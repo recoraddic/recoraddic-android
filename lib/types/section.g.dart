@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'section_record.dart';
+part of 'section.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SectionRecordAdapter extends TypeAdapter<SectionRecord> {
+class SectionAdapter extends TypeAdapter<Section> {
   @override
   final int typeId = 3;
 
   @override
-  SectionRecord read(BinaryReader reader) {
+  Section read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SectionRecord(
+    return Section(
       startDate: fields[0] as DateTime,
       endDate: fields[1] as DateTime,
       goalList: (fields[2] as List).cast<String>(),
@@ -25,7 +25,7 @@ class SectionRecordAdapter extends TypeAdapter<SectionRecord> {
   }
 
   @override
-  void write(BinaryWriter writer, SectionRecord obj) {
+  void write(BinaryWriter writer, Section obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -44,7 +44,7 @@ class SectionRecordAdapter extends TypeAdapter<SectionRecord> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SectionRecordAdapter &&
+      other is SectionAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
