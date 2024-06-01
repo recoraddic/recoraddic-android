@@ -36,6 +36,22 @@ class _SecondPageState extends State<SecondPage> {
     _accumulatedQuestListBox =
         await Hive.openBox<AccumulatedQuest>('accumulatedQuestListBox');
 
+    // 오늘 날짜의 기록이 삭제될 경우 호출
+    _dailyRecordBox.watch(key: date).listen((event) {
+        // 오늘 기록을 가져오고, UI 업데이트
+        setState(() {
+        _dailyRecord = _dailyRecordBox.get(date) ??
+          DailyRecord(
+            date: DateTime.now(),
+            diary: '',
+            accumulatedQuestList: [],
+            normalQuestList: [],
+            facialExpressionIndex: -1,
+            isSaved: false,
+          );          
+        });
+    });
+
     _accumulatedQuestListBox.watch().listen((event) {
       _accumulatedQuestList = _accumulatedQuestListBox.values.toList();
     });

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 // types
 import '../types/section.dart';
 
+import './third_page_style.dart';
+
 class GoalLayout extends StatefulWidget {
   final Section section;
   final VoidCallback onGoalChanged;
@@ -19,90 +21,124 @@ class GoalLayout extends StatefulWidget {
 class _GoalLayoutState extends State<GoalLayout> {
   TextEditingController _newGoalController = TextEditingController();
 
+  // 목표 추가 눌렀을 때
   void _showAddGoalDialog(BuildContext context) {
     _newGoalController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('목표 추가'),
-          content: TextField(
-            controller: _newGoalController,
-            decoration: InputDecoration(hintText: '새로운 목표'),
+          content: SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('목표 추가', style: AppFonts.middleWhiteText),
+                  const SizedBox(height: AppConstants.smallBoxSize),
+                  TextField(
+                    controller: _newGoalController,
+                    cursorColor: AppColors.lightBlueColor,
+                    decoration: const InputDecoration(
+                      hintText: '새로운 목표',
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.all(AppConstants.smallPadding),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.lightGreyColor, width: 0.5),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.lightBlueColor, width: 1.5),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  OneButtonWidget(
+                    buttonText: '추가하기',
+                    onPressed: () {
+                      if (_newGoalController.text.isNotEmpty) {
+                        setState(() {
+                          widget.section.goalList.add(_newGoalController.text);
+                          widget.onGoalChanged(); // Call the callback function
+                        });
+                        _newGoalController.clear();
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_newGoalController.text.isNotEmpty) {
-                  setState(() {
-                    widget.section.goalList.add(_newGoalController.text);
-                    widget.onGoalChanged(); // Call the callback function
-                  });
-                  _newGoalController.clear();
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text('추가'),
-            ),
-          ],
         );
       },
     );
   }
 
+  // 목표를 클릭한 경우
   void _showEditOrDeleteGoalDialog(BuildContext context, int index) {
     _newGoalController.text = widget.section.goalList[index];
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('목표 수정'),
-          content: TextField(
-            controller: _newGoalController,
-            decoration: InputDecoration(hintText: '목표 수정'),
+          content: SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('목표 수정', style: AppFonts.middleWhiteText),
+                  const SizedBox(height: AppConstants.smallBoxSize),
+                  TextField(
+                    controller: _newGoalController,
+                    cursorColor: AppColors.lightBlueColor,
+                    decoration: const InputDecoration(
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.all(AppConstants.smallPadding),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.lightGreyColor, width: 0.5),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.lightBlueColor, width: 1.5),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TwoButtonWidget(
+                    buttonText1: '삭제',
+                    onPressed1: () {
+                      setState(() {
+                        widget.section.goalList.removeAt(index);
+                        widget.onGoalChanged(); // Call the callback function
+                      });
+                      _newGoalController.clear();
+                      Navigator.of(context).pop();
+                    },
+                    buttonText2: '수정',
+                    onPressed2: () {
+                      if (_newGoalController.text.isNotEmpty) {
+                        setState(() {
+                          widget.section.goalList[index] = _newGoalController.text;
+                          widget.onGoalChanged(); // Call the callback function
+                        });
+                        _newGoalController.clear();
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  widget.section.goalList.removeAt(index);
-                  widget.onGoalChanged(); // Call the callback function
-                });
-                _newGoalController.clear();
-                Navigator.of(context).pop();
-              },
-              child: Text('삭제', style: TextStyle(color: Colors.red)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_newGoalController.text.isNotEmpty) {
-                  setState(() {
-                    widget.section.goalList[index] = _newGoalController.text;
-                    widget.onGoalChanged(); // Call the callback function
-                  });
-                  _newGoalController.clear();
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text('수정'),
-            ),
-          ],
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +150,8 @@ class _GoalLayoutState extends State<GoalLayout> {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
-              child: Text(
-                '목표',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
+              // 텍스트 스타일 통일
+              child: const Text('목표', style: AppFonts.bigWhiteText),
             ),
           ),
           Expanded(

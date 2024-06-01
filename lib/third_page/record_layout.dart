@@ -4,6 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// classes
+import './third_page_style.dart';
+
 // types
 import '../types/quest.dart';
 import '../types/daily_record.dart';
@@ -29,156 +32,210 @@ class RecordLayoutState extends State<RecordLayout> {
     super.initState();
   }
 
-  void _showRecordDetails(DailyRecord record) {
-    // Format the date using intl package
-    String formattedDate = DateFormat('yyyy년 M월 d일').format(record.date);
+void _showRecordDetails(DailyRecord record) {
+  // Format the date using intl package
+  String formattedDate = DateFormat('yyyy년 M월 d일').format(record.date);
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          minChildSize: 0.6,
-          maxChildSize: 1.0,
-          expand: false,
-          builder: (context, scrollController) {
-            return SingleChildScrollView(
-              controller: scrollController,
-              child: Container(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 50,
-                        height: 5,
-                        margin: EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        formattedDate,
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      '오늘의 일기',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: EdgeInsets.all(8),
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return DraggableScrollableSheet(
+        initialChildSize: 0.6,
+        minChildSize: 0.6,
+        maxChildSize: 1.0,
+        expand: false,
+        builder: (context, scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: Padding(
+              padding: const EdgeInsets.all(AppConstants.bigPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 50,
+                      height: 5,
+                      margin: const EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: Colors.grey,
+                        color: AppColors.darkGreyColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      formattedDate,
+                      style: AppFonts.middleWhiteText,
+                    ),
+                  ),
+                  const SizedBox(height: AppConstants.bigPadding),
+                  if (record.diary.isNotEmpty) ...[
+                    const Text(
+                      '그날의 일기',
+                      style: AppFonts.middleWhiteText,
+                    ),
+                    const SizedBox(height: AppConstants.smallPadding),
+                    Container(
+                      padding: const EdgeInsets.all(AppConstants.smallPadding),
+                      decoration: BoxDecoration(
+                        color: AppColors.middleGreyColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         record.diary,
-                        style: TextStyle(color: Colors.black),
+                        style: AppFonts.smallWhiteText,
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Text(
-                      '누적 퀘스트',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    const SizedBox(height: AppConstants.bigPadding),
+                    const Divider(
+                      thickness: 0.5,
+                      color: AppColors.lightGreyColor,
                     ),
-                    SizedBox(height: 8),
-                    ...record.accumulatedQuestList.map((quest) => _buildQuestItem(quest)).toList(),
-                    SizedBox(height: 16),
-                    Text(
-                      '일반 퀘스트',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 8),
-                    ...record.normalQuestList.map((quest) => _buildQuestItem(quest)).toList(),
-                    SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            widget.dailyRecords.remove(record);
-                            widget.onRecordChanged(); // Call the callback function
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '기록 삭제하기',
-                              style: TextStyle(color: Colors.red, fontSize: 18),
-                            ),
-                            SizedBox(width: 8),
-                            Icon(Icons.delete, color: Colors.red),
-                          ],
-                        ),
-                      ),
-                    ),
+                    const SizedBox(height: AppConstants.bigPadding),
                   ],
-                ),
+                  if (record.accumulatedQuestList.any((quest) => quest.isDone)) ...[
+                    const Text(
+                      '누적 퀘스트',
+                      style: AppFonts.middleWhiteText,
+                    ),
+                    const SizedBox(height: AppConstants.smallPadding),
+                    ...record.accumulatedQuestList
+                        .where((quest) => quest.isDone)
+                        .map((quest) => _buildQuestItem(quest))
+                        .toList(),
+                    const SizedBox(height: AppConstants.bigPadding),
+                    const Divider(
+                      thickness: 0.5,
+                      color: AppColors.lightGreyColor,
+                    ),
+                    const SizedBox(height: AppConstants.bigPadding),
+                  ],
+                  if (record.normalQuestList.any((quest) => quest.isDone)) ...[
+                    const Text(
+                      '일반 퀘스트',
+                      style: AppFonts.middleWhiteText,
+                    ),
+                    const SizedBox(height: AppConstants.smallPadding),
+                    ...record.normalQuestList
+                        .where((quest) => quest.isDone)
+                        .map((quest) => _buildQuestItem(quest))
+                        .toList(),
+                    const SizedBox(height: AppConstants.bigPadding),
+                  ],
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          widget.dailyRecords.remove(record);
+                          widget.onRecordChanged(); // Call the callback function
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Text(
+                            '기록 삭제하기',
+                            style: TextStyle(color: Colors.red, fontSize: 18),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(Icons.delete, color: Colors.red),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+
+
 
   Widget _buildQuestItem(Quest quest) {
     return Container(
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(AppConstants.smallPadding),
+      margin: const EdgeInsets.only(bottom: AppConstants.smallPadding),
       decoration: BoxDecoration(
-        color: Colors.black54,
-        borderRadius: BorderRadius.circular(10),
+        color: AppColors.middleGreyColor,
+        borderRadius: BorderRadius.circular(AppConstants.bigBorderRadius),
       ),
       child: Row(
         children: [
           Icon(
             quest.isDone ? Icons.check_circle : Icons.circle_outlined,
-            color: Colors.white,
+            color: AppColors.lightBlueColor,
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: AppConstants.smallPadding),
           Text(
             quest.name,
-            style: TextStyle(color: Colors.white),
+            style: AppFonts.smallWhiteText,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRecordBlock(Color blockColor, int facialExpressionIndex) {
-    return Container(
-      width: 75,
-      height: 50,
-      decoration: BoxDecoration(
-        color: blockColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 2),
+  Widget _buildRecordBlock(Color blockColor, int facialExpressionIndex, DateTime date) {
+    String formattedDate = DateFormat('yyyy/M/d').format(date);
+
+    return Row(
+      children: [
+        // Left empty box
+        Expanded(
+          child: SizedBox(),
+        ),
+
+        // Record block 크기
+        Container(
+          width: 90,
+          height: 60,
+          decoration: BoxDecoration(
+            color: blockColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 2),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Center(
-        child: Image.asset('assets/facial/facialExpression_$facialExpressionIndex.png'),
-      ),
+          child: Center(
+            child: Image.asset('assets/facial/facialExpression_${facialExpressionIndex + 1}.png'),
+          ),
+        ),
+
+        // Right box with formatted date
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(AppConstants.bigPadding), // Adjust this value as needed
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                formattedDate,
+                style: AppFonts.smallLightGreyText,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -193,10 +250,8 @@ class RecordLayoutState extends State<RecordLayout> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '기록보관함',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
+                // 폰트 고정
+                const Text('기록보관함', style: AppFonts.bigWhiteText),
               ],
             ),
             Expanded(
@@ -204,14 +259,15 @@ class RecordLayoutState extends State<RecordLayout> {
                 reverse: true,
                 itemCount: widget.dailyRecords.length,
                 itemBuilder: (context, index) {
-                  var dailyRecords = widget.dailyRecords[index];
+                  var dailyRecord = widget.dailyRecords[index];
                   return Align(
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () => _showRecordDetails(dailyRecords),
+                      onTap: () => _showRecordDetails(dailyRecord),
                       child: _buildRecordBlock(
                         widget.blockColor,
-                        dailyRecords.facialExpressionIndex,
+                        dailyRecord.facialExpressionIndex,
+                        dailyRecord.date, // Pass the date here
                       ),
                     ),
                   );
