@@ -2,7 +2,6 @@
 
 // packages
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
@@ -56,9 +55,10 @@ class _ThirdPageState extends State<ThirdPage> {
 
     // 오늘 기록에 변화가 감지되면 sectionRecord를 업데이트
     _dailyRecordBox.watch(key: date).listen((event) {
-      _totalDailyRecords = _dailyRecordBox.values.toList();
+      _totalDailyRecords = _dailyRecordBox.values.where((record) => record.isSaved).toList();
 
       setState(() {
+        // 구간별 일일 기록 업데이트(메모리)
         _updateSectionRecords();
       });
     });
@@ -67,24 +67,29 @@ class _ThirdPageState extends State<ThirdPage> {
     _loadData();
   }
 
-  // Box(disk) -> List(memory)
   void _loadData() {
-    // 저장된 일일 기록만 불러오기
-    _totalDailyRecords =
-        _dailyRecordBox.values.where((record) => record.isSaved).toList();
+    _loadDailyRecords();    // 일일 기록 가져오기
+    _loadSections();        // 구간 가져오기
+
+    setState(() {
+      _updateSectionRecords();
+    });
+  }
+  
+  // Box(disk) -> List(memory)
+  void _loadDailyRecords() {
+    _totalDailyRecords = _dailyRecordBox.values.where((record) => record.isSaved).toList();
+  }
+
+  void _loadSections() {
     _totalSections = _sectionBox.values.toList();
-
-    // 시작 날짜 오늘 0시 0분 0초
-    DateTime startDate =
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-
-    // 끝나는 날짜 30일 후 23시 59분 59초
-    DateTime endDate =
-        startDate.add(Duration(days: 30, hours: 23, minutes: 59, seconds: 59));
-
-    // 구간이 없는 경우 기본 구간 생성
-    // 어플을 처음 설치한 경우에만 실행됨
+    // 구간이 없는 경우 오늘을 구간 생성
     if (_totalSections.length == 0) {
+      // 시작 날짜 오늘 0시 0분 0초
+      DateTime startDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
+      // 끝나는 날짜 30일 후 23시 59분 59초
+      DateTime endDate = startDate.add(Duration(days: 30, hours: 23, minutes: 59, seconds: 59));
       _totalSections = [
         Section(
           startDate: startDate,
@@ -93,12 +98,7 @@ class _ThirdPageState extends State<ThirdPage> {
           blockColor: Colors.brown.value,
         ),
       ];
-      print('Init section has been added.');
     }
-
-    setState(() {
-      _updateSectionRecords();
-    });
   }
 
   void _updateSectionRecords() {
@@ -245,8 +245,7 @@ class _ThirdPageState extends State<ThirdPage> {
         }
 
         // 오늘 날짜의 기록이 이미 저장되어있다면 새로운 보관함 생성 불가
-        DateTime today = DateTime(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day);
+        DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
         bool todaysRecordExists = _sectionRecords.any((sectionRecord) {
           return sectionRecord.dailyRecords.any((record) {
             DateTime recordDate =
@@ -264,17 +263,13 @@ class _ThirdPageState extends State<ThirdPage> {
         setState(() {
           // 마지막 구간의 종료일을 어제로 변경
           DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
-          DateTime endDate = DateTime(
-              yesterday.year, yesterday.month, yesterday.day, 23, 59, 59);
+          DateTime endDate = DateTime(yesterday.year, yesterday.month, yesterday.day, 23, 59, 59);
+          
           _sectionRecords[lastSectionIndex].section.endDate = endDate;
 
-          // 시작날짜 오늘 0시 0분 0초
-          DateTime newStartDate = DateTime(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day);
-          // 끝나는 날짜 30일 후 23시 59분 59초
-          DateTime newEndDate = newStartDate
-              .add(Duration(days: 30))
-              .add(Duration(hours: 23, minutes: 59, seconds: 59));
+          // 시작날짜 오늘 0시 0분 0초, 끝나는 날짜 30일 후 23시 59분 59초
+          DateTime newStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+          DateTime newEndDate = newStartDate.add(Duration(days: 30, hours: 23, minutes: 59, seconds: 59));
 
           Section newSection = Section(
             startDate: newStartDate,
@@ -283,8 +278,7 @@ class _ThirdPageState extends State<ThirdPage> {
             blockColor: Colors.brown.value,
           );
 
-          _sectionRecords
-              .add(SectionRecord(section: newSection, dailyRecords: []));
+          _sectionRecords.add(SectionRecord(section: newSection, dailyRecords: []));
         });
 
         // 로컬 저장소에 변경사항 저장
