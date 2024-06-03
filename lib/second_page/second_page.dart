@@ -5,7 +5,7 @@ import 'package:recoraddic/types/daily_record.dart';
 import 'package:recoraddic/types/accumulated_quest.dart';
 import 'package:recoraddic/types/quest.dart';
 
-import 'style.dart';
+import '../style/style.dart';
 import 'widget.dart';
 
 class SecondPage extends StatefulWidget {
@@ -429,7 +429,7 @@ class _SecondPageState extends State<SecondPage> {
             return const Center(child: CircularProgressIndicator());
           } else {
             return Padding(
-              padding: const EdgeInsets.all(AppConstants.bigPadding),
+              padding: const EdgeInsets.only(top: AppConstants.topPadding, bottom: AppConstants.bigPadding, left: AppConstants.bigPadding, right: AppConstants.bigPadding),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
