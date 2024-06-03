@@ -357,8 +357,6 @@ class _SecondPageState extends State<SecondPage> {
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.lightGreyColor,
-                        borderRadius:
-                            BorderRadius.circular(AppConstants.bigBorderRadius),
                       ),
                       child: GridView.builder(
                         gridDelegate:
@@ -432,72 +430,74 @@ class _SecondPageState extends State<SecondPage> {
           } else {
             return Padding(
               padding: const EdgeInsets.all(AppConstants.bigPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                    child: Text(
-                      '체크리스트',
-                      style: AppFonts.bigWhiteText,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        '체크리스트',
+                        style: AppFonts.bigWhiteText,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: AppConstants.smallPadding),
-                  _dailyRecord.diary == ''
-                      ? Section(
-                          title: '오늘의 일기',
-                          subtitle: '오늘의 일기를 추가해보세요!',
-                          onPressed: _showDiaryModal,
-                        )
-                      : DiarySection(
-                          diary: _dailyRecord.diary,
-                          deleteDiary: _deleteDiary,
-                          showDiaryModal: _showDiaryModal,
-                        ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppConstants.bigPadding),
-                    child: Divider(
-                        thickness: 0.5, color: AppColors.lightGreyColor),
-                  ),
-                  _dailyRecord.accumulatedQuestList.isEmpty
-                      ? Section(
-                          title: '누적 퀘스트',
-                          subtitle: '누적 퀘스트를 추가해보세요!',
-                          onPressed: _showAccumulatedQuestModal,
-                        )
-                      : AccumulatedQuestSection(
-                          accumulatedQuestList:
-                              _dailyRecord.accumulatedQuestList,
-                          updateAccumulatedQuest: _updateAccumulatedQuest,
-                          deleteAccumulatedQuest: _deleteAccumulatedQuest,
-                          showAccumulatedQuestModal:
-                              _showAccumulatedQuestModal),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppConstants.bigPadding),
-                    child: Divider(
-                        thickness: 0.5, color: AppColors.lightGreyColor),
-                  ),
-                  _dailyRecord.normalQuestList.isEmpty
-                      ? Section(
-                          title: '일반 퀘스트',
-                          subtitle: '일반 퀘스트를 추가해보세요!',
-                          onPressed: _showNormalQuestModal,
-                        )
-                      : NormalQuestSection(
-                          normalQuestList: _dailyRecord.normalQuestList,
-                          updateNormalQuest: _updateNormalQuest,
-                          deleteNormalQuest: _deleteNormalQuest,
-                          showNormalQuestModal: _showNormalQuestModal),
-                  Center(
-                    child: CustomElevatedButton(
-                      onPressed: () {
-                        _showSaveModal(context);
-                      },
-                      buttonText: _dailyRecord.isSaved ? '수정하기' : '저장하기',
+                    const SizedBox(height: AppConstants.smallPadding),
+                    _dailyRecord.diary == ''
+                        ? Section(
+                            title: '오늘의 일기',
+                            subtitle: '오늘의 일기를 추가해보세요!',
+                            onPressed: _showDiaryModal,
+                          )
+                        : DiarySection(
+                            diary: _dailyRecord.diary,
+                            deleteDiary: _deleteDiary,
+                            showDiaryModal: _showDiaryModal,
+                          ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppConstants.bigPadding),
+                      child: Divider(
+                          thickness: 0.5, color: AppColors.lightGreyColor),
                     ),
-                  )
-                ],
+                    _dailyRecord.accumulatedQuestList.isEmpty
+                        ? Section(
+                            title: '누적 퀘스트',
+                            subtitle: '누적 퀘스트를 추가해보세요!',
+                            onPressed: _showAccumulatedQuestModal,
+                          )
+                        : AccumulatedQuestSection(
+                            accumulatedQuestList:
+                                _dailyRecord.accumulatedQuestList,
+                            updateAccumulatedQuest: _updateAccumulatedQuest,
+                            deleteAccumulatedQuest: _deleteAccumulatedQuest,
+                            showAccumulatedQuestModal:
+                                _showAccumulatedQuestModal),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppConstants.bigPadding),
+                      child: Divider(
+                          thickness: 0.5, color: AppColors.lightGreyColor),
+                    ),
+                    _dailyRecord.normalQuestList.isEmpty
+                        ? Section(
+                            title: '일반 퀘스트',
+                            subtitle: '일반 퀘스트를 추가해보세요!',
+                            onPressed: _showNormalQuestModal,
+                          )
+                        : NormalQuestSection(
+                            normalQuestList: _dailyRecord.normalQuestList,
+                            updateNormalQuest: _updateNormalQuest,
+                            deleteNormalQuest: _deleteNormalQuest,
+                            showNormalQuestModal: _showNormalQuestModal),
+                    Center(
+                      child: CustomElevatedButton(
+                        onPressed: () {
+                          _showSaveModal(context);
+                        },
+                        buttonText: _dailyRecord.isSaved ? '수정하기' : '저장하기',
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           }
