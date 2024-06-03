@@ -42,8 +42,8 @@ class Section extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                // overlayColor: Colors.transparent,
-              ),
+                  // overlayColor: Colors.transparent,
+                  ),
               visualDensity: VisualDensity.compact,
             )
           ],
@@ -221,14 +221,15 @@ class AccumulatedQuestSection extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                // overlayColor: Colors.transparent,
-              ),
+                  // overlayColor: Colors.transparent,
+                  ),
               visualDensity: VisualDensity.compact,
             ),
           ],
         ),
         const SizedBox(height: AppConstants.bigBoxSize),
         ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: accumulatedQuestList.length,
@@ -368,14 +369,15 @@ class NormalQuestSection extends StatelessWidget {
                 ),
               ),
               style: IconButton.styleFrom(
-                // overlayColor: Colors.transparent,
-              ),
+                  // overlayColor: Colors.transparent,
+                  ),
               visualDensity: VisualDensity.compact,
             ),
           ],
         ),
         const SizedBox(height: AppConstants.bigBoxSize),
         ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: normalQuestList.length,
