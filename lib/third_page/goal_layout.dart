@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 // types
 import '../types/section.dart';
 
-import './third_page_style.dart';
+import '../style/style.dart';
 
 class GoalLayout extends StatefulWidget {
   final Section section;
@@ -143,7 +143,7 @@ class _GoalLayoutState extends State<GoalLayout> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green[300],
+      color: AppColors.goalBackground,
       child: Column(
         children: [
           Align(
@@ -171,7 +171,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                           },
                           child: Text('추가'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green[50],
+                            backgroundColor: AppColors.goalBlock,
                             foregroundColor: Colors.black,
                           ),
                         ),
@@ -187,7 +187,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                       margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 32.0),
                       padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
                       decoration: BoxDecoration(
-                        color: Colors.green[50],
+                        color: AppColors.goalBlock,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Text(

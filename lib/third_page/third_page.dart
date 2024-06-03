@@ -12,7 +12,8 @@ import '../types/section.dart';
 // classes
 import './record_layout.dart';
 import './goal_layout.dart';
-import './third_page_style.dart';
+import '../style/style.dart';
+
 
 class SectionRecord {
   Section section;
@@ -292,10 +293,13 @@ class _ThirdPageState extends State<ThirdPage> {
           if (_sectionRecords.length == 1) {
             _sectionRecords.clear();
 
+            // 시작날짜 오늘 0시 0분 0초, 끝나는 날짜 30일 후 23시 59분 59초
+            DateTime startDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+            DateTime endDate = startDate.add(Duration(days: 30, hours: 23, minutes: 59, seconds: 59));
             _sectionRecords.add(SectionRecord(
               section: Section(
-                startDate: DateTime.now(),
-                endDate: DateTime.now().add(Duration(days: 30)),
+                startDate: startDate,
+                endDate: endDate,
                 goalList: [],
                 blockColor: Colors.brown.value,
               ),

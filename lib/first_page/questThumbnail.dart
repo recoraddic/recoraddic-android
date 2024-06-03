@@ -40,7 +40,7 @@ class QuestThumbnail extends StatelessWidget {
                 ),
               ),
               Text(
-                "Accumulative $accumulative",
+                "누적: ${accumulative}회",
                 style: TextStyle(
                   color: brighten2(getTierColor(tier), -0.5),
                 ),

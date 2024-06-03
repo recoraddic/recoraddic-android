@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // classes
-import './third_page_style.dart';
+import '../style/style.dart';
 
 // types
 import '../types/quest.dart';
@@ -234,16 +234,13 @@ void _showRecordDetails(DailyRecord record) {
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue[300],
+      color: AppColors.recordBackground,
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.only(top: 50.0, left: 16.0, right: 16.0, bottom: 16.0),
+        padding: EdgeInsets.only(top: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
