@@ -4,9 +4,10 @@ import 'function/calendarfunc.dart';
 import 'questThumbnail.dart';
 import 'package:recoraddic/types/quest.dart';
 import 'package:recoraddic/types/accumulated_quest.dart';
-import 'package:recoraddic/second_page/style.dart';
+// import 'package:recoraddic/second_page/style.dart';
 import 'package:recoraddic/second_page/widget.dart';
 
+import '../style/style.dart';
 
 // 할일: delete accumulatedQuest, 추가 시 이름 같은 것 막기
 
@@ -173,6 +174,179 @@ class _FirstPageState extends State<FirstPage> {
 
 
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return FutureBuilder(
+  //     future: _initBoxFuture,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return const Center(child: CircularProgressIndicator());
+  //       } 
+  //       else {  
+  //         return Scaffold(
+  //           appBar: AppBar(
+  //             // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+  //             title: const Center(child: Text("누적 퀘스트 보관함")),
+  //           ),
+  //           body: Stack(
+  //             children: [
+  //               LayoutBuilder(
+  //                 builder: (context, constrants) {
+  //                   return SizedBox(
+  //                     width: MediaQuery.of(context).size.width,
+  //                     height: constrants.maxHeight,
+  //                     child: GridView.builder(
+  //                       padding: const EdgeInsets.all(20),
+  //                       itemCount: _accumulatedQuestList.length,
+  //                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //                         crossAxisCount: 3, // Number of columns
+  //                         crossAxisSpacing: 10, // Space between columns
+  //                         mainAxisSpacing: 10, // Space between rows
+  //                       ),
+  //                       itemBuilder: (BuildContext context, int index) {
+  //                         return GestureDetector(
+  //                           onTap: () {
+  //                             showModalBottomSheet(
+  //                               context: context,
+  //                               isScrollControlled: true,
+  //                               builder: (BuildContext context) {
+  //                                 return SizedBox(
+  //                                   width: MediaQuery.of(context).size.width,
+  //                                   height: MediaQuery.of(context).size.height * 0.9,
+  //                                   child: QuestStatistics(accumulatedQuest: _accumulatedQuestList[index],),
+  //                                 );
+  //                               },
+  //                             );
+  //                           },
+  //                           onLongPress: () {
+  //                             _showMenu(
+  //                               context,
+  //                               _accumulatedQuestList[index].quest.name
+  //                             );
+  //                           },
+  //                           child: QuestThumbnail(
+  //                             name: _accumulatedQuestList[index].quest.name,
+  //                             tier: _accumulatedQuestList[index].tier,
+  //                             accumulative: _accumulatedQuestList[index].dates.length,
+  //                             momentumLevel: _accumulatedQuestList[index].momentumLevel,
+  //                           ),
+  //                         );
+  //                       },
+  //                     ),
+  //                   );
+  //                 }
+  //               ),
+  //               Positioned(
+  //                 bottom: 30,
+  //                 left: 0,
+  //                 right: 0,
+  //                 child: IconButton(
+  //                   icon: Container(
+  //                     width: 50.0, // Set the desired width
+  //                     height: 30.0, // Set the desired height
+  //                     child: Icon(
+  //                       Icons.add,
+  //                       size: 30.0, // Adjust the size of the icon inside the container
+  //                     ),
+  //                   ),
+  //                   onPressed: () {
+  //                     // Handle your button tap here...
+  //                     _inputForNewAccumulatedQuest(context);
+  //                   },
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   );
+  // }
+
+  // 스택 사용하지 않고
+  // @override
+  // Widget build(BuildContext context) {
+  //   return FutureBuilder(
+  //     future: _initBoxFuture,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return const Center(child: CircularProgressIndicator());
+  //       } else {
+  //         return Scaffold(
+  //           appBar: AppBar(
+  //             title: const Center(child: Text("누적 퀘스트 보관함")),
+  //           ),
+  //           body: Column(
+  //             children: [
+  //               Expanded(
+  //                 child: LayoutBuilder(
+  //                   builder: (context, constraints) {
+  //                     return SizedBox(
+  //                       width: MediaQuery.of(context).size.width,
+  //                       height: constraints.maxHeight,
+  //                       child: GridView.builder(
+  //                         padding: const EdgeInsets.all(20),
+  //                         itemCount: _accumulatedQuestList.length,
+  //                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //                           crossAxisCount: 3, // Number of columns
+  //                           crossAxisSpacing: 10, // Space between columns
+  //                           mainAxisSpacing: 10, // Space between rows
+  //                         ),
+  //                         itemBuilder: (BuildContext context, int index) {
+  //                           return GestureDetector(
+  //                             onTap: () {
+  //                               showModalBottomSheet(
+  //                                 context: context,
+  //                                 isScrollControlled: true,
+  //                                 builder: (BuildContext context) {
+  //                                   return SizedBox(
+  //                                     width: MediaQuery.of(context).size.width,
+  //                                     height: MediaQuery.of(context).size.height * 0.9,
+  //                                     child: QuestStatistics(
+  //                                       accumulatedQuest: _accumulatedQuestList[index],
+  //                                     ),
+  //                                   );
+  //                                 },
+  //                               );
+  //                             },
+  //                             onLongPress: () {
+  //                               _showMenu(
+  //                                 context,
+  //                                 _accumulatedQuestList[index].quest.name
+  //                               );
+  //                             },
+  //                             child: QuestThumbnail(
+  //                               name: _accumulatedQuestList[index].quest.name,
+  //                               tier: _accumulatedQuestList[index].tier,
+  //                               accumulative: _accumulatedQuestList[index].dates.length,
+  //                               momentumLevel: _accumulatedQuestList[index].momentumLevel,
+  //                             ),
+  //                           );
+  //                         },
+  //                       ),
+  //                     );
+  //                   }
+  //                 ),
+  //               ),
+  //               Padding(
+  //                 padding: const EdgeInsets.only(bottom: 30.0),
+  //                 child: IconButton(
+  //                   icon: Icon(
+  //                     Icons.add,
+  //                     size: 40.0,
+  //                   ),
+  //                   onPressed: () {
+  //                     _inputForNewAccumulatedQuest(context);
+  //                   },
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -180,70 +354,77 @@ class _FirstPageState extends State<FirstPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } 
-        else {  
+        } else {
           return Scaffold(
-            appBar: AppBar(
-              // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: const Center(child: Text("누적 퀘스트 보관함")),
-            ),
-            body: Stack(
+            body: Column(
               children: [
-                LayoutBuilder(
-                  builder: (context, constrants) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: constrants.maxHeight,
-                      child: GridView.builder(
-                        padding: const EdgeInsets.all(20),
-                        itemCount: _accumulatedQuestList.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, // Number of columns
-                          crossAxisSpacing: 10, // Space between columns
-                          mainAxisSpacing: 10, // Space between rows
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height * 0.9,
-                                    child: QuestStatistics(accumulatedQuest: _accumulatedQuestList[index],),
-                                  );
-                                },
-                              );
-                            },
-                            onLongPress: () {
-                              _showMenu(
-                                context,
-                                _accumulatedQuestList[index].quest.name
-                              );
-                            },
-                            child: QuestThumbnail(
-                              name: _accumulatedQuestList[index].quest.name,
-                              tier: _accumulatedQuestList[index].tier,
-                              accumulative: _accumulatedQuestList[index].dates.length,
-                              momentumLevel: _accumulatedQuestList[index].momentumLevel,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
+                Padding(
+                  padding: const EdgeInsets.only(top: AppConstants.topPadding),
+                  child: Center(
+                    child: Text(
+                      "누적 퀘스트 보관함",
+                      style: AppFonts.bigWhiteText,
+                    ),
+                  ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  left:0,
-                  right: 0,
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: constraints.maxHeight,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(20),
+                          itemCount: _accumulatedQuestList.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, // Number of columns
+                            crossAxisSpacing: 10, // Space between columns
+                            mainAxisSpacing: 10, // Space between rows
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (BuildContext context) {
+                                    return SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: MediaQuery.of(context).size.height * 0.9,
+                                      child: QuestStatistics(
+                                        accumulatedQuest: _accumulatedQuestList[index],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              onLongPress: () {
+                                _showMenu(
+                                  context,
+                                  _accumulatedQuestList[index].quest.name
+                                );
+                              },
+                              child: QuestThumbnail(
+                                name: _accumulatedQuestList[index].quest.name,
+                                tier: _accumulatedQuestList[index].tier,
+                                accumulative: _accumulatedQuestList[index].dates.length,
+                                momentumLevel: _accumulatedQuestList[index].momentumLevel,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppConstants.bigPadding),
                   child: IconButton(
-                    icon: Icon(Icons.add), // Change this to your plus image
+                    icon: Icon(
+                      Icons.add,
+                      size: 40.0,
+                    ),
                     onPressed: () {
-                      // Handle your button tap here...
-                      //
                       _inputForNewAccumulatedQuest(context);
                     },
                   ),
@@ -252,9 +433,10 @@ class _FirstPageState extends State<FirstPage> {
             ),
           );
         }
-      }
+      },
     );
   }
+
 }
 
 class QuestStatistics extends StatelessWidget {

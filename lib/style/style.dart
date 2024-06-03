@@ -7,6 +7,15 @@ class AppColors {
   static const Color lightGreyColor = Color.fromRGBO(255, 255, 255, 0.5);
   static const Color middleGreyColor = Color.fromRGBO(255, 255, 255, 0.1);
   static const Color darkGreyColor = Color.fromRGBO(255, 255, 255, 0.05);
+
+  // 기록보관함 배경 색상
+  static const Color recordBackground = Color.fromRGBO(100, 181, 246, 1);
+
+  // 목표 배경 색상
+  static const Color goalBackground = Color.fromRGBO(129, 199, 132, 1);
+
+  // 골 목록 색상
+  static const Color goalBlock = Color.fromRGBO(200, 230, 201, 1);
 }
 
 class AppFonts {
@@ -48,6 +57,7 @@ class AppFonts {
 }
 
 class AppConstants {
+  static const double topPadding = 50.0;
   static const double bigPadding = 16.0;
   static const double middlePadding = 12.0;
   static const double smallPadding = 8.0;
