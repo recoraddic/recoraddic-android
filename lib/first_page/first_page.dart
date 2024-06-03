@@ -418,7 +418,7 @@ class _FirstPageState extends State<FirstPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: AppConstants.bigPadding),
+                  padding: const EdgeInsets.only(top: AppConstants.bigPadding, bottom: AppConstants.bigPadding),
                   child: IconButton(
                     icon: Icon(
                       Icons.add,

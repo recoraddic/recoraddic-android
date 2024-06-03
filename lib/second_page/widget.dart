@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recoraddic/types/quest.dart';
 
-import 'style.dart';
+import '../style/style.dart';
 
 class Section extends StatelessWidget {
   final String title;
