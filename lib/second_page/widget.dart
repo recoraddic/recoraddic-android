@@ -28,7 +28,7 @@ class Section extends StatelessWidget {
               padding: const EdgeInsets.only(left: AppConstants.smallPadding),
               child: Text(
                 title,
-                style: AppFonts.middleWhiteText,
+                style: AppFonts.middleWhiteText(context),
               ),
             ),
             IconButton(
@@ -52,7 +52,7 @@ class Section extends StatelessWidget {
         Center(
           child: Text(
             subtitle,
-            style: AppFonts.smallLightGreyText,
+            style: AppFonts.smallLightGreyText(context),
           ),
         ),
         const SizedBox(height: AppConstants.bigBoxSize),
@@ -116,11 +116,11 @@ class DiarySection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: AppConstants.smallBoxSize),
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: AppConstants.smallPadding),
           child: Text(
             '오늘의 일기',
-            style: AppFonts.middleWhiteText,
+            style: AppFonts.middleWhiteText(context),
             textAlign: TextAlign.left,
           ),
         ),
@@ -143,7 +143,7 @@ class DiarySection extends StatelessWidget {
                 ),
                 child: Text(
                   diary,
-                  style: AppFonts.smallWhiteText,
+                  style: AppFonts.smallWhiteText(context),
                 ),
               ),
             ),
@@ -202,11 +202,11 @@ class AccumulatedQuestSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: AppConstants.smallPadding),
               child: Text(
                 '누적 퀘스트',
-                style: AppFonts.middleWhiteText,
+                style: AppFonts.middleWhiteText(context),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -269,8 +269,8 @@ class AccumulatedQuestSection extends StatelessWidget {
                     label: Text(
                       accumulatedQuestList[index].name,
                       style: accumulatedQuestList[index].isDone
-                          ? AppFonts.smallWhiteText
-                          : AppFonts.smallLightGreyText,
+                          ? AppFonts.smallWhiteText(context)
+                          : AppFonts.smallLightGreyText(context),
                     ),
                     style: TextButton.styleFrom(
                       minimumSize: Size.zero,
@@ -349,11 +349,11 @@ class NormalQuestSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: AppConstants.smallPadding),
               child: Text(
                 '일반 퀘스트',
-                style: AppFonts.middleWhiteText,
+                style: AppFonts.middleWhiteText(context),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -416,8 +416,8 @@ class NormalQuestSection extends StatelessWidget {
                     label: Text(
                       normalQuestList[index].name,
                       style: normalQuestList[index].isDone
-                          ? AppFonts.smallWhiteText
-                          : AppFonts.smallLightGreyText,
+                          ? AppFonts.smallWhiteText(context)
+                          : AppFonts.smallLightGreyText(context),
                     ),
                     style: TextButton.styleFrom(
                       minimumSize: Size.zero,
@@ -462,7 +462,7 @@ class CustomElevatedButton extends StatelessWidget {
           ),
           child: Text(
             buttonText,
-            style: AppFonts.smallWhiteText,
+            style: AppFonts.smallWhiteText(context),
           ),
         ),
       ],
