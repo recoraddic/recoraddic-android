@@ -34,8 +34,7 @@ class _GoalLayoutState extends State<GoalLayout> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('목표 추가', style: AppFonts.middleWhiteText),
-                  const SizedBox(height: AppConstants.smallBoxSize),
+                  Text('목표 추가', style: AppFonts.middleWhiteText(context)),
                   TextField(
                     controller: _newGoalController,
                     cursorColor: AppColors.lightBlueColor,
@@ -53,7 +52,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16.0),
+                  // const SizedBox(height: 16.0),
                   OneButtonWidget(
                     buttonText: '추가하기',
                     onPressed: () {
@@ -89,7 +88,7 @@ class _GoalLayoutState extends State<GoalLayout> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('목표 수정', style: AppFonts.middleWhiteText),
+                  Text('목표 수정', style: AppFonts.middleWhiteText(context)),
                   const SizedBox(height: AppConstants.smallBoxSize),
                   TextField(
                     controller: _newGoalController,
@@ -151,7 +150,7 @@ class _GoalLayoutState extends State<GoalLayout> {
             child: Padding(
               padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
               // 텍스트 스타일 통일
-              child: const Text('목표', style: AppFonts.bigWhiteText),
+              child: Text('목표', style: AppFonts.bigWhiteText(context)),
             ),
           ),
           Expanded(

@@ -108,7 +108,7 @@ class _FirstPageState extends State<FirstPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('새로운 누적 퀘스트', style: AppFonts.middleWhiteText),
+                  Text('새로운 누적 퀘스트', style: AppFonts.middleWhiteText(context)),
                   const SizedBox(height: AppConstants.smallBoxSize),
                   TextField(
                     maxLines: null,
@@ -130,7 +130,7 @@ class _FirstPageState extends State<FirstPage> {
                   ),
                   Builder(builder: (context) {
                     if (_accumulatedQuestList.map((e) => e.quest.name).contains(nameController.text)) {
-                      return const Text('이미 존재하는 퀘스트입니다.', style: AppFonts.smallWhiteText);
+                      return Text('이미 존재하는 퀘스트입니다.', style: AppFonts.smallWhiteText(context));
                     }
                     else {
                       return const SizedBox();
@@ -363,7 +363,7 @@ class _FirstPageState extends State<FirstPage> {
                   child: Center(
                     child: Text(
                       "누적 퀘스트 보관함",
-                      style: AppFonts.bigWhiteText,
+                      style: AppFonts.bigWhiteText(context),
                     ),
                   ),
                 ),

@@ -151,7 +151,7 @@ class _SecondPageState extends State<SecondPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('오늘의 일기', style: AppFonts.middleWhiteText),
+                  Text('오늘의 일기', style: AppFonts.middleWhiteText(context)),
                   const SizedBox(height: AppConstants.smallBoxSize),
                   TextField(
                     maxLines: null,
@@ -269,7 +269,7 @@ class _SecondPageState extends State<SecondPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('일반 퀘스트', style: AppFonts.middleWhiteText),
+                  Text('일반 퀘스트', style: AppFonts.middleWhiteText(context)),
                   const SizedBox(height: AppConstants.smallBoxSize),
                   TextField(
                     controller: diaryController,
@@ -346,10 +346,10 @@ class _SecondPageState extends State<SecondPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(_dailyRecord.isSaved ? '수정하기' : '저장하기',
-                        style: AppFonts.middleWhiteText),
+                        style: AppFonts.middleWhiteText(context)),
                     const SizedBox(height: AppConstants.smallBoxSize),
-                    const Text('오늘을 표현할 표정을 고르세요!',
-                        style: AppFonts.smallLightGreyText),
+                    Text('오늘을 표현할 표정을 고르세요!',
+                        style: AppFonts.smallLightGreyText(context)),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.3,
                       margin: const EdgeInsets.symmetric(
@@ -434,10 +434,10 @@ class _SecondPageState extends State<SecondPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Center(
+                    Center(
                       child: Text(
                         '체크리스트',
-                        style: AppFonts.bigWhiteText,
+                        style: AppFonts.bigWhiteText(context),
                       ),
                     ),
                     const SizedBox(height: AppConstants.smallPadding),

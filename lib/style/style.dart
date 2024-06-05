@@ -9,51 +9,72 @@ class AppColors {
   static const Color darkGreyColor = Color.fromRGBO(255, 255, 255, 0.05);
 
   // 기록보관함 배경 색상
-  static const Color recordBackground = Color.fromRGBO(100, 181, 246, 1);
+  // static const Color recordBackground = Color.fromRGBO(100, 181, 246, 1);
+  static const Color recordBackground = Color.fromRGBO(44, 62, 80, 0.7);
+
 
   // 목표 배경 색상
-  static const Color goalBackground = Color.fromRGBO(129, 199, 132, 1);
+  // static const Color goalBackground = Color.fromRGBO(129, 199, 132, 1);
+  static const Color goalBackground =  Color.fromRGBO(60, 110, 60, 0.7);
 
   // 골 목록 색상
-  static const Color goalBlock = Color.fromRGBO(200, 230, 201, 1);
+  static const Color goalBlock = Color.fromRGBO(200, 230, 201, 0.7);
+}
+
+class FontSize {
+  static double scaleFont(BuildContext context, double fontSize) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    // Adjust the factor as needed, usually a value between 0.001 to 0.002
+    return fontSize * screenWidth * 0.002;
+  }
 }
 
 class AppFonts {
-  static const TextStyle bigWhiteText = TextStyle(
+  static TextStyle bigWhiteText(BuildContext context) {
+    return TextStyle(
+      color: AppColors.whiteColor,
+      fontSize: FontSize.scaleFont(context, 30),
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w700,
+      height: 1.6,
+    );
+  }
+  static TextStyle middleWhiteText(BuildContext context) {
+    return TextStyle(
     color: AppColors.whiteColor,
-    fontSize: 30,
+    fontSize: FontSize.scaleFont(context, 24),
     fontFamily: 'Inter',
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
     height: 1.6,
   );
-  static const TextStyle middleWhiteText = TextStyle(
+  }
+  static TextStyle smallWhiteText(BuildContext context) {
+    return TextStyle(
     color: AppColors.whiteColor,
-    fontSize: 24,
+    fontSize: FontSize.scaleFont(context, 18),
     fontFamily: 'Inter',
     fontWeight: FontWeight.w500,
     height: 1.6,
   );
-  static const TextStyle smallWhiteText = TextStyle(
-    color: AppColors.whiteColor,
-    fontSize: 18,
-    fontFamily: 'Inter',
-    fontWeight: FontWeight.w500,
-    height: 1.6,
+  }
+  static TextStyle smallLightGreyText(BuildContext context) {
+    return TextStyle(
+      color: AppColors.lightGreyColor,
+      fontSize: FontSize.scaleFont(context, 18),
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w500,
+      height: 1.6,
   );
-  static const TextStyle smallLightGreyText = TextStyle(
-    color: AppColors.lightGreyColor,
-    fontSize: 18,
-    fontFamily: 'Inter',
-    fontWeight: FontWeight.w500,
-    height: 1.6,
+  }
+  static TextStyle tinyLightGreyText(BuildContext context) {
+    return TextStyle(
+      color: AppColors.lightGreyColor,
+      fontSize: FontSize.scaleFont(context, 14),
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w500,
+      height: 1.6,
   );
-  static const TextStyle tinyLightGreyText = TextStyle(
-    color: AppColors.lightGreyColor,
-    fontSize: 14,
-    fontFamily: 'Inter',
-    fontWeight: FontWeight.w500,
-    height: 1.6,
-  );
+  }
 }
 
 class AppConstants {
@@ -92,7 +113,7 @@ class OneButtonWidget extends StatelessWidget {
           ),
           child: Text(
             buttonText,
-            style: AppFonts.smallWhiteText,
+            style: AppFonts.smallWhiteText(context),
           ),
         ),
       ],
@@ -131,7 +152,7 @@ class TwoButtonWidget extends StatelessWidget {
           ),
           child: Text(
             buttonText1,
-            style: AppFonts.smallWhiteText,
+            style: AppFonts.smallWhiteText(context),
           ),
         ),
         const SizedBox(width: AppConstants.smallBoxSize),
@@ -147,7 +168,7 @@ class TwoButtonWidget extends StatelessWidget {
           ),
           child: Text(
             buttonText2,
-            style: AppFonts.smallWhiteText,
+            style: AppFonts.smallWhiteText(context),
           ),
         ),
       ],

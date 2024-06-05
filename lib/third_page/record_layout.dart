@@ -70,14 +70,14 @@ void _showRecordDetails(DailyRecord record) {
                   Center(
                     child: Text(
                       formattedDate,
-                      style: AppFonts.middleWhiteText,
+                      style: AppFonts.middleWhiteText(context),
                     ),
                   ),
                   const SizedBox(height: AppConstants.bigPadding),
                   if (record.diary.isNotEmpty) ...[
-                    const Text(
+                    Text(
                       '그날의 일기',
-                      style: AppFonts.middleWhiteText,
+                      style: AppFonts.middleWhiteText(context),
                     ),
                     const SizedBox(height: AppConstants.smallPadding),
                     Container(
@@ -88,7 +88,7 @@ void _showRecordDetails(DailyRecord record) {
                       ),
                       child: Text(
                         record.diary,
-                        style: AppFonts.smallWhiteText,
+                        style: AppFonts.smallWhiteText(context),
                       ),
                     ),
                     const SizedBox(height: AppConstants.bigPadding),
@@ -99,9 +99,9 @@ void _showRecordDetails(DailyRecord record) {
                     const SizedBox(height: AppConstants.bigPadding),
                   ],
                   if (record.accumulatedQuestList.any((quest) => quest.isDone)) ...[
-                    const Text(
+                    Text(
                       '누적 퀘스트',
-                      style: AppFonts.middleWhiteText,
+                      style: AppFonts.middleWhiteText(context),
                     ),
                     const SizedBox(height: AppConstants.smallPadding),
                     ...record.accumulatedQuestList
@@ -116,9 +116,9 @@ void _showRecordDetails(DailyRecord record) {
                     const SizedBox(height: AppConstants.bigPadding),
                   ],
                   if (record.normalQuestList.any((quest) => quest.isDone)) ...[
-                    const Text(
+                    Text(
                       '일반 퀘스트',
-                      style: AppFonts.middleWhiteText,
+                      style: AppFonts.middleWhiteText(context),
                     ),
                     const SizedBox(height: AppConstants.smallPadding),
                     ...record.normalQuestList
@@ -179,7 +179,7 @@ void _showRecordDetails(DailyRecord record) {
           const SizedBox(width: AppConstants.smallPadding),
           Text(
             quest.name,
-            style: AppFonts.smallWhiteText,
+            style: AppFonts.smallWhiteText(context),
           ),
         ],
       ),
@@ -225,7 +225,7 @@ void _showRecordDetails(DailyRecord record) {
               alignment: Alignment.centerLeft,
               child: Text(
                 formattedDate,
-                style: AppFonts.smallLightGreyText,
+                style: AppFonts.smallLightGreyText(context),
               ),
             ),
           ),
@@ -248,7 +248,7 @@ void _showRecordDetails(DailyRecord record) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // 폰트 고정
-                const Text('기록보관함', style: AppFonts.bigWhiteText),
+                Text('기록보관함', style: AppFonts.bigWhiteText(context)),
               ],
             ),
             Expanded(

@@ -197,9 +197,9 @@ class _ThirdPageState extends State<ThirdPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('오류', style: AppFonts.middleWhiteText),
+                  Text('오류', style: AppFonts.middleWhiteText(context)),
                   const SizedBox(height: AppConstants.smallBoxSize),
-                  Text(message, style: AppFonts.smallWhiteText),
+                  Text(message, style: AppFonts.smallWhiteText(context)),
                   OneButtonWidget(
                     buttonText: '확인',
                     onPressed: () {
