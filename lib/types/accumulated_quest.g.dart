@@ -17,7 +17,7 @@ class AccumulatedQuestAdapter extends TypeAdapter<AccumulatedQuest> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AccumulatedQuest(
-      quest: fields[0] as Quest,
+      quest: fields[0] as DailyQuest,
     )
       ..dates = (fields[1] as List).cast<DateTime>()
       ..tier = fields[2] as int

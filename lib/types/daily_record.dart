@@ -13,10 +13,10 @@ class DailyRecord extends HiveObject {
   String diary = '';
 
   @HiveField(2)
-  List<Quest> accumulatedQuestList = [];
+  List<DailyQuest> dailyQuestList_accumulated = [];
 
   @HiveField(3)
-  List<Quest> normalQuestList = [];
+  List<DailyQuest> dailyQuestList_normal = [];
 
   @HiveField(4)
   int facialExpressionIndex = -1;
@@ -27,8 +27,8 @@ class DailyRecord extends HiveObject {
   DailyRecord({
     required this.date,
     required this.diary,
-    required this.accumulatedQuestList,
-    required this.normalQuestList,
+    required this.dailyQuestList_accumulated,
+    required this.dailyQuestList_normal,
     required this.facialExpressionIndex,
     required this.isSaved,
   });
