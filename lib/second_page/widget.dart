@@ -156,7 +156,7 @@ class DiarySection extends StatelessWidget {
 }
 
 class AccumulatedQuestSection extends StatelessWidget {
-  final List<Quest> accumulatedQuestList;
+  final List<DailyQuest> accumulatedQuestList;
   final Future Function(int) updateAccumulatedQuest;
   final Future Function(int) deleteAccumulatedQuest;
   final void Function(BuildContext) showAccumulatedQuestModal;
@@ -291,7 +291,7 @@ class AccumulatedQuestSection extends StatelessWidget {
 }
 
 class NormalQuestSection extends StatelessWidget {
-  final List<Quest> normalQuestList;
+  final List<DailyQuest> normalQuestList;
   final Future Function(int) updateNormalQuest;
   final Future Function(int) deleteNormalQuest;
   final void Function(BuildContext, {int? index}) showNormalQuestModal;

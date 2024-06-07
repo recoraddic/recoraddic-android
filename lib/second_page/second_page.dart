@@ -44,8 +44,8 @@ class _SecondPageState extends State<SecondPage> {
           DailyRecord(
             date: DateTime.now(),
             diary: '',
-            accumulatedQuestList: [],
-            normalQuestList: [],
+            dailyQuestList_accumulated: [],
+            dailyQuestList_normal: [],
             facialExpressionIndex: -1,
             isSaved: false,
           );          
@@ -61,8 +61,8 @@ class _SecondPageState extends State<SecondPage> {
           DailyRecord(
             date: DateTime.now(),
             diary: '',
-            accumulatedQuestList: [],
-            normalQuestList: [],
+            dailyQuestList_accumulated: [],
+            dailyQuestList_normal: [],
             facialExpressionIndex: -1,
             isSaved: false,
           );
@@ -87,10 +87,10 @@ class _SecondPageState extends State<SecondPage> {
   Future _updateAccumulatedQuest(int index) async {
     for (var accumulatedQuest in _accumulatedQuestList) {
       if (accumulatedQuest.quest.name ==
-          _dailyRecord.accumulatedQuestList[index].name) {
+          _dailyRecord.dailyQuestList_accumulated[index].name) {
 
         DateTime date = normalize(DateTime.now());
-        if (_dailyRecord.accumulatedQuestList[index].isDone) {
+        if (_dailyRecord.dailyQuestList_accumulated[index].isDone) {
           accumulatedQuest.dates.remove(date);
         } else {
           if (!accumulatedQuest.dates.contains(date)) {
@@ -102,8 +102,8 @@ class _SecondPageState extends State<SecondPage> {
     }
 
     setState(() {
-      _dailyRecord.accumulatedQuestList[index].isDone =
-          !_dailyRecord.accumulatedQuestList[index].isDone;
+      _dailyRecord.dailyQuestList_accumulated[index].isDone =
+          !_dailyRecord.dailyQuestList_accumulated[index].isDone;
     });
 
     await _saveDailyRecord();
@@ -111,7 +111,7 @@ class _SecondPageState extends State<SecondPage> {
 
   Future _deleteAccumulatedQuest(int index) async {
     setState(() {
-      _dailyRecord.accumulatedQuestList.removeAt(index);
+      _dailyRecord.dailyQuestList_accumulated.removeAt(index);
     });
 
     await _saveDailyRecord();
@@ -119,8 +119,8 @@ class _SecondPageState extends State<SecondPage> {
 
   Future _updateNormalQuest(int index) async {
     setState(() {
-      _dailyRecord.normalQuestList[index].isDone =
-          !_dailyRecord.normalQuestList[index].isDone;
+      _dailyRecord.dailyQuestList_normal[index].isDone =
+          !_dailyRecord.dailyQuestList_normal[index].isDone;
     });
 
     await _saveDailyRecord();
@@ -128,7 +128,7 @@ class _SecondPageState extends State<SecondPage> {
 
   Future _deleteNormalQuest(int index) async {
     setState(() {
-      _dailyRecord.normalQuestList.removeAt(index);
+      _dailyRecord.dailyQuestList_normal.removeAt(index);
     });
 
     await _saveDailyRecord();
@@ -203,22 +203,25 @@ class _SecondPageState extends State<SecondPage> {
   }
 
   void _showAccumulatedQuestModal(BuildContext context) {
-    List<Quest> curAccumulatedQuestList = [];
+    List<DailyQuest> curAccumulatedQuestList = [];
 
     for (var accumulatedQuest in _accumulatedQuestList) {
-      if (_dailyRecord.accumulatedQuestList.contains(accumulatedQuest.quest) ==
-          false) {
-        curAccumulatedQuestList.add(accumulatedQuest.quest);
+      String questName = accumulatedQuest.quest.name;
+      if (!_dailyRecord.dailyQuestList_accumulated.map((dailyQuest) => dailyQuest.name).contains(questName)) {
+        curAccumulatedQuestList.add(DailyQuest(name: questName, isDone: false));
       }
     }
 
-    if (curAccumulatedQuestList.isEmpty) {
-      return;
-    }
+
 
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+        if (curAccumulatedQuestList.isEmpty) {
+          return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[ Text("추가 가능한 누적 퀘스트가 없습니다.")]);
+        }
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -231,8 +234,8 @@ class _SecondPageState extends State<SecondPage> {
                     title: Text(curAccumulatedQuestList[index].name),
                     onTap: () async {
                       setState(() {
-                        _dailyRecord.accumulatedQuestList.add(
-                          _accumulatedQuestList[index].quest,
+                        _dailyRecord.dailyQuestList_accumulated.add(
+                          curAccumulatedQuestList[index],
                         );
                       });
 
@@ -256,7 +259,7 @@ class _SecondPageState extends State<SecondPage> {
     final TextEditingController diaryController = TextEditingController();
 
     if (index != null) {
-      diaryController.text = _dailyRecord.normalQuestList[index].name;
+      diaryController.text = _dailyRecord.dailyQuestList_normal[index].name;
     }
 
     showDialog(
@@ -296,11 +299,11 @@ class _SecondPageState extends State<SecondPage> {
                         if (normalQuest.isNotEmpty) {
                           setState(() {
                             if (index == null) {
-                              _dailyRecord.normalQuestList.add(
-                                Quest(name: normalQuest, isDone: false),
+                              _dailyRecord.dailyQuestList_normal.add(
+                                DailyQuest(name: normalQuest, isDone: false),
                               );
                             } else {
-                              _dailyRecord.normalQuestList[index].name =
+                              _dailyRecord.dailyQuestList_normal[index].name =
                                   normalQuest;
                             }
                           });
@@ -458,7 +461,7 @@ class _SecondPageState extends State<SecondPage> {
                       child: Divider(
                           thickness: 0.5, color: AppColors.lightGreyColor),
                     ),
-                    _dailyRecord.accumulatedQuestList.isEmpty
+                    _dailyRecord.dailyQuestList_accumulated.isEmpty
                         ? Section(
                             title: '누적 퀘스트',
                             subtitle: '누적 퀘스트를 추가해보세요!',
@@ -466,7 +469,7 @@ class _SecondPageState extends State<SecondPage> {
                           )
                         : AccumulatedQuestSection(
                             accumulatedQuestList:
-                                _dailyRecord.accumulatedQuestList,
+                                _dailyRecord.dailyQuestList_accumulated,
                             updateAccumulatedQuest: _updateAccumulatedQuest,
                             deleteAccumulatedQuest: _deleteAccumulatedQuest,
                             showAccumulatedQuestModal:
@@ -477,14 +480,14 @@ class _SecondPageState extends State<SecondPage> {
                       child: Divider(
                           thickness: 0.5, color: AppColors.lightGreyColor),
                     ),
-                    _dailyRecord.normalQuestList.isEmpty
+                    _dailyRecord.dailyQuestList_normal.isEmpty
                         ? Section(
                             title: '일반 퀘스트',
                             subtitle: '일반 퀘스트를 추가해보세요!',
                             onPressed: _showNormalQuestModal,
                           )
                         : NormalQuestSection(
-                            normalQuestList: _dailyRecord.normalQuestList,
+                            normalQuestList: _dailyRecord.dailyQuestList_normal,
                             updateNormalQuest: _updateNormalQuest,
                             deleteNormalQuest: _deleteNormalQuest,
                             showNormalQuestModal: _showNormalQuestModal),

@@ -98,13 +98,13 @@ void _showRecordDetails(DailyRecord record) {
                     ),
                     const SizedBox(height: AppConstants.bigPadding),
                   ],
-                  if (record.accumulatedQuestList.any((quest) => quest.isDone)) ...[
+                  if (record.dailyQuestList_accumulated.any((quest) => quest.isDone)) ...[
                     Text(
                       '누적 퀘스트',
                       style: AppFonts.middleWhiteText(context),
                     ),
                     const SizedBox(height: AppConstants.smallPadding),
-                    ...record.accumulatedQuestList
+                    ...record.dailyQuestList_accumulated
                         .where((quest) => quest.isDone)
                         .map((quest) => _buildQuestItem(quest))
                         .toList(),
@@ -115,13 +115,13 @@ void _showRecordDetails(DailyRecord record) {
                     ),
                     const SizedBox(height: AppConstants.bigPadding),
                   ],
-                  if (record.normalQuestList.any((quest) => quest.isDone)) ...[
+                  if (record.dailyQuestList_normal.any((quest) => quest.isDone)) ...[
                     Text(
                       '일반 퀘스트',
                       style: AppFonts.middleWhiteText(context),
                     ),
                     const SizedBox(height: AppConstants.smallPadding),
-                    ...record.normalQuestList
+                    ...record.dailyQuestList_normal
                         .where((quest) => quest.isDone)
                         .map((quest) => _buildQuestItem(quest))
                         .toList(),
@@ -162,7 +162,7 @@ void _showRecordDetails(DailyRecord record) {
 
 
 
-  Widget _buildQuestItem(Quest quest) {
+  Widget _buildQuestItem(DailyQuest quest) {
     return Container(
       padding: const EdgeInsets.all(AppConstants.smallPadding),
       margin: const EdgeInsets.only(bottom: AppConstants.smallPadding),

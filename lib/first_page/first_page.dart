@@ -54,7 +54,7 @@ class _FirstPageState extends State<FirstPage> {
 
   void _insertAccumulatedQuest(String key) {
     _accumulatedQuestListBox.put(key,AccumulatedQuest(
-      quest: Quest(name: key, isDone: false),
+      quest: DailyQuest(name: key, isDone: false),
     )).then((_) {
       _updateBox();
    });

@@ -19,8 +19,8 @@ class DailyRecordAdapter extends TypeAdapter<DailyRecord> {
     return DailyRecord(
       date: fields[0] as DateTime,
       diary: fields[1] as String,
-      accumulatedQuestList: (fields[2] as List).cast<Quest>(),
-      normalQuestList: (fields[3] as List).cast<Quest>(),
+      dailyQuestList_accumulated: (fields[2] as List).cast<DailyQuest>(),
+      dailyQuestList_normal: (fields[3] as List).cast<DailyQuest>(),
       facialExpressionIndex: fields[4] as int,
       isSaved: fields[5] as bool,
     );
@@ -35,9 +35,9 @@ class DailyRecordAdapter extends TypeAdapter<DailyRecord> {
       ..writeByte(1)
       ..write(obj.diary)
       ..writeByte(2)
-      ..write(obj.accumulatedQuestList)
+      ..write(obj.dailyQuestList_accumulated)
       ..writeByte(3)
-      ..write(obj.normalQuestList)
+      ..write(obj.dailyQuestList_normal)
       ..writeByte(4)
       ..write(obj.facialExpressionIndex)
       ..writeByte(5)

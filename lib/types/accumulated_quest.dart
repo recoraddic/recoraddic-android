@@ -8,7 +8,7 @@ part 'accumulated_quest.g.dart';
 @HiveType(typeId: 2)
 class AccumulatedQuest extends HiveObject {
   @HiveField(0)
-  Quest quest = Quest(name: '', isDone: false);
+  DailyQuest quest = DailyQuest(name: '', isDone: false);
 
   @HiveField(1)
   List<DateTime> dates = [];

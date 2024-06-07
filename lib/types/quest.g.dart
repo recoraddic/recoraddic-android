@@ -6,24 +6,24 @@ part of 'quest.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class QuestAdapter extends TypeAdapter<Quest> {
+class QuestAdapter extends TypeAdapter<DailyQuest> {
   @override
   final int typeId = 0;
 
   @override
-  Quest read(BinaryReader reader) {
+  DailyQuest read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Quest(
+    return DailyQuest(
       name: fields[0] as String,
       isDone: fields[1] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Quest obj) {
+  void write(BinaryWriter writer, DailyQuest obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
