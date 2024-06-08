@@ -163,15 +163,18 @@ class _GoalLayoutState extends State<GoalLayout> {
                     child: Align(
                       alignment: Alignment.center,
                       child: FractionallySizedBox(
-                        widthFactor: 0.3,
+                        widthFactor: 0.25,
                         child: ElevatedButton(
                           onPressed: () {
                             _showAddGoalDialog(context);
                           },
-                          child: Text('추가'),
+                          child: Text('추가', style: AppFonts.smallBlackText(context),),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.goalBlock,
                             foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppConstants.bigBorderRadius),
+                            ),
                           ),
                         ),
                       ),
@@ -191,7 +194,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                       ),
                       child: Text(
                         '${index + 1}. ${widget.section.goalList[index]}',
-                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                        style: AppFonts.smallBlackText(context),
                       ),
                     ),
                   );
