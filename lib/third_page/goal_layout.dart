@@ -163,7 +163,7 @@ class _GoalLayoutState extends State<GoalLayout> {
                     child: Align(
                       alignment: Alignment.center,
                       child: FractionallySizedBox(
-                        widthFactor: 0.2,
+                        widthFactor: 0.3,
                         child: ElevatedButton(
                           onPressed: () {
                             _showAddGoalDialog(context);
