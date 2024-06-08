@@ -7,6 +7,7 @@ class AppColors {
   static const Color lightGreyColor = Color.fromRGBO(255, 255, 255, 0.5);
   static const Color middleGreyColor = Color.fromRGBO(255, 255, 255, 0.1);
   static const Color darkGreyColor = Color.fromRGBO(255, 255, 255, 0.05);
+  static const Color blackColor = Color.fromRGBO(0, 0, 0, 1);
 
   // 기록보관함 배경 색상
   // static const Color recordBackground = Color.fromRGBO(100, 181, 246, 1);
@@ -70,6 +71,15 @@ class AppFonts {
     return TextStyle(
       color: AppColors.lightGreyColor,
       fontSize: FontSize.scaleFont(context, 14),
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w500,
+      height: 1.6,
+  );
+  }
+  static TextStyle smallBlackText(BuildContext context) {
+    return TextStyle(
+      color: AppColors.blackColor,
+      fontSize: FontSize.scaleFont(context, 18),
       fontFamily: 'Inter',
       fontWeight: FontWeight.w500,
       height: 1.6,
