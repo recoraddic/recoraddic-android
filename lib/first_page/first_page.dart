@@ -675,13 +675,18 @@ class RowContent extends StatelessWidget {
                             end: Alignment.bottomRight)),
                     child: Stack(children: [
                       Align(
-                        alignment: Alignment.topLeft,
-                        child: Text('${date.day}'),
+                        alignment: Alignment.center,
+                        child: Text('${date.day}',
+                            style: TextStyle(
+                              fontSize: 15,
+                            )
+                        ),
                       ),
                       if (date.day == 1)
                         Opacity(
                             opacity: 0.5,
-                            child: Center(
+                            child: Align(
+                              alignment: Alignment.topLeft,
                               child: Text('${date.year % 100}/${date.month}',
                                   style: const TextStyle(
                                     fontSize: 10,
@@ -690,6 +695,34 @@ class RowContent extends StatelessWidget {
                     ]),
                   ),
                 );
+                // return SizedBox(
+                //   width: width / 7,
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //         gradient: LinearGradient(
+                //             colors: colors,
+                //             begin: Alignment.topLeft,
+                //             end: Alignment.bottomRight)),
+                //     child: Stack(children: [
+                //       Align(
+                //         alignment: Alignment.topLeft,
+                //         child: Padding(
+                //           padding: EdgeInsets.all(width / 70),
+                //           child: Text('${date.day}'),
+                //         ),
+                //       ),
+                //       if (date.day == 1)
+                //         Opacity(
+                //             opacity: 0.5,
+                //             child: Center(
+                //               child: Text('${date.year % 100}/${date.month}',
+                //                   style: const TextStyle(
+                //                     fontSize: 10,
+                //                   )),
+                //             ))
+                //     ]),
+                //   ),
+                // );
               }).toList(),
             ),
           ]),
